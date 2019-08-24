@@ -98,6 +98,16 @@ client.on('message', message => {
 							name: 'Player Stats',
 							value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
 							inline: true,
+						},
+						{
+							name: 'Advanced Stats',
+							value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseAdvancedBattingStats(data),
+							inline: true,
+						},
+						{
+							name: 'Fielding Stats',
+							value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseFieldingStats(data),
+							inline: true,
 						}],
 						timestamp: new Date(),
 						footer: {
