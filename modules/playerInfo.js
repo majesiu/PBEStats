@@ -1,26 +1,28 @@
-// const http = require('http');
+const http = require('http');
 const $ = require('cheerio');
 
-// function getPlayerInfo(id) {
-// 	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
-// 		let data = '';
-// 		resp.on('data', (chunk) => {
-// 			data += chunk;
-// 		});
-// 		resp.on('end', () => {
-// 			const title = $('.reptitle ', data).text();
-// 			console.log(title);
-// 			if(title.startsWith('P')) {
-// 				console.log(parsePitcherPage(data));
-// 			}
-// 			else {
-// 				console.log(parseBatterPage(data));
-// 			}
-// 		});
-// 	}).on('error', (err) => {
-// 		console.log('Error: ' + err.message);
-// 	});
-// }
+function getPlayerInfo(id) {
+	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+		let data = '';
+		resp.on('data', (chunk) => {
+			data += chunk;
+		});
+		resp.on('end', () => {
+			const title = $('.reptitle ', data).text();
+			console.log(title);
+			if(title.startsWith('P')) {
+				console.log(parsePitcherPage(data));
+			}
+			else {
+				console.log(parseBatterPage(data));
+			}
+			console.log($('img[src*="player"]', data).attr('src'));
+			console.log('Team name: ' + $('a[href*="team"]', data).eq(0).text());
+		});
+	}).on('error', (err) => {
+		console.log('Error: ' + err.message);
+	});
+}
 
 function parseBatterPage(data) {
 	let basicInfo = '';
@@ -59,3 +61,5 @@ function parsePitcherPage(data) {
 
 exports.parseBatterPage = parseBatterPage;
 exports.parsePitcherPage = parsePitcherPage;
+
+console.log(getPlayerInfo('599'));

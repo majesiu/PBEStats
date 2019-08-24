@@ -9,6 +9,25 @@ const scrapPlayers = require('./modules/scrapPlayers.js');
 
 const client = new Discord.Client();
 
+const teamColors = {
+	'New York Voyagers': 0xbabf88,
+	'Florida Space Rangers': 0x000001,
+	'Outer Banks Aviators': 0xce5428,
+	'Cancun Toros': 0xec60b0,
+	'Providence Crabs': 0x0067b5,
+	'Death Valley Scorpions': 0x9f1c33,
+	'Vancouver Vandals': 0x228b22,
+	'San Antonio Sloths': 0xc6b3a2,
+	'Utah Railroaders': 0xa854c9,
+	'Nashville Stars': 0x83c1ec,
+	'Anchorage Wheelers': 0xa0fbff,
+	'Amarillo Armadillos': 0xffdb00,
+	'State College Swift Steeds': 0x519fd8,
+	'Kingston Mounties': 0x460505,
+	'Dallas Dynamos': 0x17ece5,
+	'Kansas City Hepcats': 0xc9e5ff,
+};
+
 client.on('ready', () => {
 	standings.initializeStandings();
 	scrapPlayers.initializePlayersList();
@@ -62,20 +81,24 @@ client.on('message', message => {
 					console.log(title);
 
 					return message.channel.send({ embed: {
-						color: 3447003,
+						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,
+						},
+						image: {
+							url: $('img[src*="player"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
+						},
+						thumbnail: {
+							url: $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
 						},
 						title: title,
 						url: `http://www.pbesim.com/players/player_${id}.html`,
 						fields: [{
 							name: 'Player Stats',
 							value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
-                        }],
-                        image: {
-                            url: 'https://i.imgur.com/wSTFkRM.png',
-                        },
+							inline: true,
+						}],
 						timestamp: new Date(),
 						footer: {
 							icon_url: client.user.avatarURL,
