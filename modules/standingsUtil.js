@@ -1,4 +1,3 @@
-'use strict';
 const tabletojson = require('tabletojson');
 const { table, getBorderCharacters } = require('table');
 const { majorsStandingsLink, minorsStandingsLink } = require('../config.json');
