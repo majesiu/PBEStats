@@ -5,11 +5,14 @@ const $ = require('cheerio');
 const { prefix, token } = require('./config.json');
 const standings = require('./modules/standings.js');
 const playerInfo = require('./modules/playerInfo.js');
+const scrapPlayers = require('./modules/scrapPlayers.js');
 
 const client = new Discord.Client();
 
 client.on('ready', () => {
 	standings.initializeStandings();
+	scrapPlayers.initializePlayersList();
+	console.log('Initialized Player List');
 	console.log('Ready!');
 });
 
@@ -32,7 +35,7 @@ client.on('message', message => {
 			title: 'PBE Current Standings',
 			url: 'http://www.pbesim.com/leagues/league_100_standings.html',
 			fields: [{
-				name: 'Standings',
+				name: 'PBE',
 				value:  args[0] != null && args[0] === 'm' ? standings.standingsMinors() : standings.standingsMajors(),
 			},
 			],
@@ -44,38 +47,52 @@ client.on('message', message => {
 		});
 	}
 	else if (command === 'p' || command === 'player') {
-		console.log(`Player info: ${args[0]}`);
-		http.get(`http://www.pbesim.com/players/player_${args[0]}.html`, (resp) => {
-			let data = '';
-			resp.on('data', (chunk) => {
-				data += chunk;
-			});
-			resp.on('end', () => {
-				const title = $('.reptitle ', data).text();
-				console.log(title); 
-
-				return message.channel.send({ embed: {
-					color: 3447003,
-					author: {
-						name: client.user.username,
-						icon_url: client.user.avatarURL,
-					},
-					title: title,
-					url: `http://www.pbesim.com/players/player_${args[0]}.html`,
-					fields: [{
-						name: 'Player Stats',
-						value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
-					}],
-					timestamp: new Date(),
-					footer: {
-						icon_url: client.user.avatarURL,
-						text: '© majesiu',
-					} },
+		const name = args.join(' ');
+		console.log(`Player info: ${name}`);
+		const id = scrapPlayers.getPlayers()[name];
+		console.log(id);
+		if(id) {
+			http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+				let data = '';
+				resp.on('data', (chunk) => {
+					data += chunk;
 				});
+				resp.on('end', () => {
+					const title = $('.reptitle ', data).text();
+					console.log(title);
+
+					return message.channel.send({ embed: {
+						color: 3447003,
+						author: {
+							name: client.user.username,
+							icon_url: client.user.avatarURL,
+						},
+						title: title,
+						url: `http://www.pbesim.com/players/player_${id}.html`,
+						fields: [{
+							name: 'Player Stats',
+							value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
+                        }],
+                        image: {
+                            url: 'https://i.imgur.com/wSTFkRM.png',
+                        },
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: '© majesiu',
+						} },
+					});
+				});
+			}).on('error', (err) => {
+				console.log('Error: ' + err.message);
 			});
-		}).on('error', (err) => {
-			console.log('Error: ' + err.message);
-		});
+		}
+		else {
+			return message.channel.send(`Player ${name} not found`);
+		}
+	}
+	else if (command === 'help') {
+		return message.channel.send('```!st or !standings show current standings, add m e.g. !st m to see MiLPBE Standings\n!p Player Name show currents stats```');
 	}
 });
 

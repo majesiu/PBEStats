@@ -1,26 +1,26 @@
-const http = require('http');
+// const http = require('http');
 const $ = require('cheerio');
 
-function getPlayerInfo(id) {
-	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
-		let data = '';
-		resp.on('data', (chunk) => {
-			data += chunk;
-		});
-		resp.on('end', () => {
-			const title = $('.reptitle ', data).text();
-			console.log(title);
-			if(title.startsWith('P')) {
-				console.log(parsePitcherPage(data));
-			}
-			else {
-				console.log(parseBatterPage(data));
-			}
-		});
-	}).on('error', (err) => {
-		console.log('Error: ' + err.message);
-	});
-}
+// function getPlayerInfo(id) {
+// 	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+// 		let data = '';
+// 		resp.on('data', (chunk) => {
+// 			data += chunk;
+// 		});
+// 		resp.on('end', () => {
+// 			const title = $('.reptitle ', data).text();
+// 			console.log(title);
+// 			if(title.startsWith('P')) {
+// 				console.log(parsePitcherPage(data));
+// 			}
+// 			else {
+// 				console.log(parseBatterPage(data));
+// 			}
+// 		});
+// 	}).on('error', (err) => {
+// 		console.log('Error: ' + err.message);
+// 	});
+// }
 
 function parseBatterPage(data) {
 	let basicInfo = '';
@@ -56,8 +56,6 @@ function parsePitcherPage(data) {
 	basicInfo += '\nWAR: ' + $('table .data > tbody > tr > td:nth-child(12)', data).eq(0).text();
 	return basicInfo;
 }
-
-getPlayerInfo(458);
 
 exports.parseBatterPage = parseBatterPage;
 exports.parsePitcherPage = parsePitcherPage;
