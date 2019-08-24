@@ -1,9 +1,10 @@
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
-const tabletojson = require('tabletojson');
+const standings = require('./modules/standings.js');
 
 client.on('ready', () => {
+	standings.initializeStandings();
 	console.log('Ready!');
 });
 
@@ -31,22 +32,26 @@ client.on('message', message => {
 	// 		return message.channel.send(`Your avatar: <${message.author.displayAvatarURL}>`);
 	// 	}
 	// }
-	else if (command === 'standings') {
-		tabletojson.convertUrl(
-			'http://www.pbesim.com/leagues/league_100_standings.html',
-			function(tablesAsJson) {
-				const East = tablesAsJson[3];
-				console.log(East[0]);
-				const West = tablesAsJson[4];
-				let returnMessage = '> **Current Standings:**';
-				for (let i = 0; i < East.length; i++) {
-					// emotes instead of team names???
-					returnMessage += '\n > ' + East[i].Team.split(' ')[0]; 
-				}
-				returnMessage += '\n > © majesiu';
-				return message.channel.send(returnMessage);
-			}
-		);
+	else if (command === 'st' || command === 'standings') {
+		return message.channel.send({ embed: {
+			color: 3447003,
+			author: {
+				name: client.user.username,
+				icon_url: client.user.avatarURL,
+			},
+			title: 'PBE Current Standings',
+			url: 'http://www.pbesim.com/leagues/league_100_standings.html',
+			fields: [{
+				name: 'Standings',
+				value:  args[0] != null && args[0] === 'm' ? standings.standingsMinors() : standings.standingsMajors(),
+			},
+			],
+			timestamp: new Date(),
+			footer: {
+				icon_url: client.user.avatarURL,
+				text: '© majesiu',
+			} },
+		});
 	}
 });
 
