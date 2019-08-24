@@ -2,6 +2,7 @@ const playerInfo = require('../modules/playerInfo.js');
 const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
 const $ = require('cheerio');
+const playerPersistence = require('../modules/playerPersistence');
 
 const teamColors = {
 	'New York Voyagers': 0xbabf88,
@@ -27,11 +28,18 @@ module.exports = {
 	aliases: ['p', 'plyr'],
 	description: 'Returns player info embed',
 	cooldown: 5,
-	execute(message, args, client) {
-		const name = args.join(' ');
-		console.log(`Player info: ${name}`);
+	async execute(message, args, client) {
+		let name = args.join(' ');
+		if(name === '') {
+			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
+			if(name === '') {
+				name = playername.get('playername');
+			}
+			else {
+				return message.channel.send('Use !save Player Name to bind player to the !p command');
+			}
+		}
 		const id = scrapPlayers.getPlayers()[name];
-		console.log(id);
 		if(id) {
 			http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
 				let data = '';

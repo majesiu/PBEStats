@@ -4,10 +4,12 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const standings = require('./modules/standingsUtil.js');
 const scrapPlayers = require('./modules/scrapPlayers.js');
+const playerPersistence = require('./modules/playerPersistence');
 
 const client = new Discord.Client();
 
 client.commands = new Discord.Collection();
+
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -21,6 +23,7 @@ const cooldowns = new Discord.Collection();
 client.on('ready', () => {
 	standings.initializeStandings();
 	scrapPlayers.initializePlayersList();
+	playerPersistence.userPlayers.sync();
 	console.log('Initialized Player List');
 	console.log('Ready!');
 });
@@ -74,7 +77,7 @@ client.on('message', message => {
 		command.execute(message, args, client);
 	}
 	catch (error) {
-        console.error(error);
+		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
 });

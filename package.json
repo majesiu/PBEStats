@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "sequelize": "^5.16.0",
+    "sqlite3": "^4.1.0",
     "table": "^5.4.6"
   }
 }
