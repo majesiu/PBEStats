@@ -1,5 +1,6 @@
 'use strict';
 const tabletojson = require('tabletojson');
+const { table, getBorderCharacters } = require('table');
 const { majorsStandingsLink, minorsStandingsLink } = require('../config.json');
 const emotes = {
 	'New York Voyagers':'NYV',
@@ -20,8 +21,19 @@ const emotes = {
 	'Kansas City Hepcats':'KCH',
 };
 
-let standingsMajors;
-let standingsMinors;
+
+let standingsEastMajors;
+let standingsWestMajors;
+let standingsEastMinors;
+let standingsWestMinors;
+const config = {
+	border: getBorderCharacters('honeywell'),
+	columnDefault: {
+		paddingLeft: 0,
+		paddingRight: 0,
+		alignment: 'left',
+	},
+};
 
 // TODO: transform/add this into cron-job
 function initializeStandings() {
@@ -30,41 +42,60 @@ function initializeStandings() {
 		function(tablesAsJson) {
 			const East = tablesAsJson[3];
 			const West = tablesAsJson[4];
-			standingsMajors = '\n**East Division:**\nTeam |  W |  L |  PCT |  Home |  Away |  Streak |  Last10';
+			const eastTable = [];
+			const westTable = [];
+			eastTable.push(['Team', 'W', 'L', 'PCT', 'Home', 'Away', 'Strk', 'Last10']);
+			westTable.push(['Team', 'W', 'L', 'PCT', 'Home', 'Away', 'Strk', 'Last10']);
 			for (let i = 0; i < East.length; i++) {
-				standingsMajors += `\n ${i + 1}. ${emotes[East[i].Team]} | ${East[i].W}-${East[i].L} |  ${East[i].PCT} |  ${East[i].Home} |  ${East[i].Away} |  ${East[i].Streak} |  ${East[i].Last10}`;
+				eastTable.push([emotes[East[i].Team], East[i].W, East[i].L, East[i].PCT, East[i].Home, East[i].Away, East[i].Streak, East[i].Last10]);
 			}
-			standingsMajors += '\n\n**West Division:**\nTeam |  W  |  L |  PCT |  Home | Away |  Streak |  Last10';
+			standingsEastMajors = '```' + table(eastTable, config) + '```';
 			for (let i = 0; i < West.length; i++) {
-				standingsMajors += `\n ${i + 1}. ${emotes[West[i].Team]} |  ${West[i].W}-${West[i].L} |  ${West[i].PCT} |  ${West[i].Home} |  ${West[i].Away} |  ${West[i].Streak} |  ${West[i].Last10}`;
+				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
+			standingsWestMajors = '```' + table(westTable, config) + '```';
 		});
 	tabletojson.convertUrl(
 		minorsStandingsLink,
 		function(tablesAsJson) {
 			const East = tablesAsJson[3];
 			const West = tablesAsJson[4];
-			standingsMinors = '\n**East Division:**\nTeam |  W |  L |  PCT |  Home |  Away |  Streak |  Last10';
+			const eastTable = [];
+			const westTable = [];
+			eastTable.push(['Team', 'W', 'L', 'PCT', 'Home', 'Away', 'Strk', 'Last10']);
+			westTable.push(['Team', 'W', 'L', 'PCT', 'Home', 'Away', 'Strk', 'Last10']);
 			for (let i = 0; i < East.length; i++) {
-				standingsMinors += `\n ${i + 1}. ${emotes[East[i].Team]} | ${East[i].W}-${East[i].L} |  ${East[i].PCT} |  ${East[i].Home} |  ${East[i].Away} |  ${East[i].Streak} |  ${East[i].Last10}`;
+				eastTable.push([emotes[East[i].Team], East[i].W, East[i].L, East[i].PCT, East[i].Home, East[i].Away, East[i].Streak, East[i].Last10]);
 			}
-			standingsMinors += '\n\n**West Division:**\nTeam |  W  |  L |  PCT |  Home | Away |  Streak |  Last10';
+			standingsEastMinors = '```' + table(eastTable, config) + '```';
 			for (let i = 0; i < West.length; i++) {
-				standingsMinors += `\n ${i + 1}. ${emotes[West[i].Team]} |  ${West[i].W}-${West[i].L} |  ${West[i].PCT} |  ${West[i].Home} |  ${West[i].Away} |  ${West[i].Streak} |  ${West[i].Last10}`;
+				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
+			standingsWestMinors = '```' + table(westTable, config) + '```';
 		});
 	console.log('Initialized Standings');
 }
 
-function getStandingsMajors() {
-	return standingsMajors;
+function getStandingsEastMajors() {
+	return standingsEastMajors;
 }
 
-function getStandingsMinors() {
-	return standingsMinors;
+function getStandingsWestMajors() {
+	return standingsWestMajors;
+}
+
+function getStandingsEastMinors() {
+	return standingsEastMinors;
+}
+
+function getStandingsWestMinors() {
+	return standingsWestMinors;
 }
 
 exports.initializeStandings = initializeStandings;
-exports.standingsMinors = getStandingsMinors;
-exports.standingsMajors = getStandingsMajors;
+exports.getStandingsEastMajors = getStandingsEastMajors;
+exports.getStandingsWestMajors = getStandingsWestMajors;
+exports.getStandingsEastMinors = getStandingsEastMinors;
+exports.getStandingsWestMinors = getStandingsWestMinors;
 
+initializeStandings();
