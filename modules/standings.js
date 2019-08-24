@@ -23,7 +23,7 @@ const emotes = {
 let standingsMajors;
 let standingsMinors;
 
-
+// TODO: transform/add this into cron-job
 function initializeStandings() {
 	tabletojson.convertUrl(
 		majorsStandingsLink,

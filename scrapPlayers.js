@@ -1,4 +1,4 @@
-const https = require('http');
+const http = require('http');
 const $ = require('cheerio');
 
 function nextChar(c) {
@@ -10,7 +10,7 @@ const players = {};
 let letter = 'a';
 for (let i = 0; i < 26; i++) {
 	console.log(letter);
-	https.get(`http://www.pbesim.com/leagues/league_100_players_${letter}.html`, (resp) => {
+	http.get(`http://www.pbesim.com/leagues/league_100_players_${letter}.html`, (resp) => {
 		let data = '';
 
 		resp.on('data', (chunk) => {
@@ -21,10 +21,7 @@ for (let i = 0; i < 26; i++) {
 			$('td .dl > a[href*="player"]', data).each(function(index, element) {
 				players[$(element).text()] = $(element).attr('href');
 			});
-            console.log(players);
-			// for (let i = 0; i < players.length; i++) {
-			// 	console.log(players[i].firstChild.name + ' -> ' + players[i].attribs.href);
-			// }
+			console.log(players);
 		});
 
 	}).on('error', (err) => {

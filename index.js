@@ -1,7 +1,12 @@
 const Discord = require('discord.js');
+const http = require('http');
+const $ = require('cheerio');
+
 const { prefix, token } = require('./config.json');
-const client = new Discord.Client();
 const standings = require('./modules/standings.js');
+const playerInfo = require('./modules/playerInfo.js');
+
+const client = new Discord.Client();
 
 client.on('ready', () => {
 	standings.initializeStandings();
@@ -15,23 +20,8 @@ client.on('message', message => {
 	const command = args.shift().toLowerCase();
 
 	if (command === 'ping') {
-		// send back "Pong." to the channel the message was sent in
 		message.channel.send('Pong.');
 	}
-	// else if (command === 'args-info') {
-	// 	if (!args.length) {
-	// 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-	// 	}
-	// 	else if (args[0] === 'foo') {
-	// 		return message.channel.send('bar');
-	// 	}
-	// 	message.channel.send(`First argument: ${args[0]}`);
-	// }
-	// else if (command === 'avatar') {
-	// 	if (!message.mentions.users.size) {
-	// 		return message.channel.send(`Your avatar: <${message.author.displayAvatarURL}>`);
-	// 	}
-	// }
 	else if (command === 'st' || command === 'standings') {
 		return message.channel.send({ embed: {
 			color: 3447003,
@@ -53,6 +43,56 @@ client.on('message', message => {
 			} },
 		});
 	}
+	else if (command === 'p' || command === 'player') {
+		console.log(`Player info: ${args[0]}`);
+		http.get(`http://www.pbesim.com/players/player_${args[0]}.html`, (resp) => {
+			let data = '';
+			resp.on('data', (chunk) => {
+				data += chunk;
+			});
+			resp.on('end', () => {
+				const title = $('.reptitle ', data).text();
+				console.log(title); 
+
+				return message.channel.send({ embed: {
+					color: 3447003,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL,
+					},
+					title: title,
+					url: `http://www.pbesim.com/players/player_${args[0]}.html`,
+					fields: [{
+						name: 'Player Stats',
+						value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
+					}],
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: '© majesiu',
+					} },
+				});
+			});
+		}).on('error', (err) => {
+			console.log('Error: ' + err.message);
+		});
+	}
 });
 
 client.login(token);
+
+
+// else if (command === 'args-info') {
+// 	if (!args.length) {
+// 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+// 	}
+// 	else if (args[0] === 'foo') {
+// 		return message.channel.send('bar');
+// 	}
+// 	message.channel.send(`First argument: ${args[0]}`);
+// }
+// else if (command === 'avatar') {
+// 	if (!message.mentions.users.size) {
+// 		return message.channel.send(`Your avatar: <${message.author.displayAvatarURL}>`);
+// 	}
+// }
