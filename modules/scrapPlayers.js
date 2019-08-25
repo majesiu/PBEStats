@@ -17,7 +17,6 @@ function initializePlayersList() {
 			});
 
 			resp.on('end', () => {
-				// TODO: More trimming, lowercasing
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					const key = $(element).text().split(',');
 					const id = $(element).attr('href').match(/\d+/)[0];
@@ -43,7 +42,7 @@ function initializePlayersList() {
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					const key = $(element).text().split(',');
 					const id = $(element).attr('href').match(/\d+/)[0];
-					players[(`${key[1]} ${key[0]}`).trim()] = id;
+					players[(`${key[1].toLowerCase().trim()} ${key[0].toLowerCase().trim()}`).trim()] = id;
 				});
 			});
 
