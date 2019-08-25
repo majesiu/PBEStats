@@ -170,6 +170,12 @@ const tableLineupConfig = {
 		paddingRight: 0,
 		alignment: 'left',
 	},
+	columns: {
+		2: {
+			width: 16,
+			wrapWord: true,
+		},
+	},
 };
 
 function battingLineup(data, versus) {
