@@ -22,10 +22,12 @@ const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
 	standings.initializeStandings();
+	console.log('Initialized Standings');
 	scrapPlayers.initializePlayersList();
+	console.log('Initialized Player List');
 	playerPersistence.userPlayers.sync();
 	playerPersistence.userTeams.sync();
-	console.log('Initialized Player List');
+	console.log('Persistence Synchronized');
 	console.log('Ready!');
 });
 

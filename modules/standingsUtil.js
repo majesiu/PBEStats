@@ -73,7 +73,6 @@ function initializeStandings() {
 			}
 			standingsWestMinors = '```fix\n' + table(westTable, config) + '```';
 		});
-	console.log('Initialized Standings');
 }
 
 function getStandingsEastMajors() {
@@ -97,5 +96,3 @@ exports.getStandingsEastMajors = getStandingsEastMajors;
 exports.getStandingsWestMajors = getStandingsWestMajors;
 exports.getStandingsEastMinors = getStandingsEastMinors;
 exports.getStandingsWestMinors = getStandingsWestMinors;
-
-initializeStandings();
