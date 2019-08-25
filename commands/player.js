@@ -60,7 +60,7 @@ module.exports = {
 							url: $('img[src*="player"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
 						},
 						thumbnail: {
-							url: $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
+							url: $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com') : 'http://www.pbesim.com/images/league_logos/pro_baseball_experience.png',
 						},
 						title: title,
 						url: `http://www.pbesim.com/players/player_${id}.html`,
