@@ -45,7 +45,7 @@ const teamIds = {
 module.exports = {
 	name: 'lineups',
 	aliases: ['l', 'lineup'],
-	description: 'Returns team lineup info embed',
+	description: 'Returns team lineup info embed\nE.g. Type "!lineups Florida Space Rangers" to see batting lineups of that team',
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');

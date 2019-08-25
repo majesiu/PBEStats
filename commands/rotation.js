@@ -44,7 +44,7 @@ const teamIds = {
 module.exports = {
 	name: 'rotation',
 	aliases: ['r', 'bulpen', 'starters'],
-	description: 'Returns team pitchers info embed',
+	description: 'Returns team pitchers info embed\nE.g. Type "!rotation Florida Space Rangers" to see Pitching Staff of that team',
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
@@ -137,6 +137,5 @@ function pitchingData(data) {
 		}
 	});
 	output += '';
-	console.log(output);
 	return output;
 }

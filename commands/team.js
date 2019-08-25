@@ -43,7 +43,7 @@ const teamIds = {
 module.exports = {
 	name: 'team',
 	aliases: ['t', 'tm'],
-	description: 'Returns team info embed',
+	description: 'Returns team info embed\nE.g. Type "!team Outer Banks Aviators" too see detailed statistics about the team',
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');

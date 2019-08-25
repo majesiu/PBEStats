@@ -2,7 +2,7 @@ const standings = require('../modules/standingsUtil');
 
 module.exports = {
 	name: 'standings',
-	description: 'Replies embed with Current PBE or MiLPBE Standings',
+	description: 'Replies embed with Current PBE or MiLPBE Standings\nE.g. Type "!st" to see PBE standings, "!st m" for minors',
 	cooldown: 5,
 	aliases: ['st', 's'],
 	execute(message, args, client) {

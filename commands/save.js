@@ -3,7 +3,7 @@ const playerPersistence = require('../modules/playerPersistence');
 
 module.exports = {
 	name: 'save',
-	description: 'Binds player to the user, so they don\'t have to specify when using !p',
+	description: 'Saves player to the user, so they don\'t have to specify when using !p\nE.g. Type "!save George McBash" and use !p afterwards',
 	cooldown: 5,
 	execute(message, args) {
 		const name = args.join(' ');

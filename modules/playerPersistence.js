@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize('PBEStats', 'user', 'password', {
 	host: 'localhost',
 	dialect: 'sqlite',
-	logging: true,
+	logging: false,
 	operatorsAliases: false,
 	// SQLite only
 	storage: 'database.sqlite',
