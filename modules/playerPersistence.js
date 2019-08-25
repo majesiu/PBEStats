@@ -17,4 +17,14 @@ const userPlayers = sequelize.define('userPlayers', {
 	playername: Sequelize.STRING,
 });
 
+const userTeams = sequelize.define('userTeams', {
+	username: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+	teamname: Sequelize.STRING,
+});
+
+
 exports.userPlayers = userPlayers;
+exports.userTeams = userTeams;

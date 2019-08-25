@@ -35,6 +35,7 @@ const config = {
 };
 
 // TODO: transform/add this into cron-job
+// TODO: Colorize tables using discord https://www.reddit.com/r/discordapp/comments/8lev3t/discord_colored_text_with_code_markup_guide/
 function initializeStandings() {
 	tabletojson.convertUrl(
 		majorsStandingsLink,
@@ -48,11 +49,11 @@ function initializeStandings() {
 			for (let i = 0; i < East.length; i++) {
 				eastTable.push([emotes[East[i].Team], East[i].W, East[i].L, East[i].PCT, East[i].Home, East[i].Away, East[i].Streak, East[i].Last10]);
 			}
-			standingsEastMajors = '```' + table(eastTable, config) + '```';
+			standingsEastMajors = '```yaml\n' + table(eastTable, config) + '```';
 			for (let i = 0; i < West.length; i++) {
 				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
-			standingsWestMajors = '```' + table(westTable, config) + '```';
+			standingsWestMajors = '```yaml\n' + table(westTable, config) + '```';
 		});
 	tabletojson.convertUrl(
 		minorsStandingsLink,
@@ -66,11 +67,11 @@ function initializeStandings() {
 			for (let i = 0; i < East.length; i++) {
 				eastTable.push([emotes[East[i].Team], East[i].W, East[i].L, East[i].PCT, East[i].Home, East[i].Away, East[i].Streak, East[i].Last10]);
 			}
-			standingsEastMinors = '```' + table(eastTable, config) + '```';
+			standingsEastMinors = '```yaml\n' + table(eastTable, config) + '```';
 			for (let i = 0; i < West.length; i++) {
 				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
-			standingsWestMinors = '```' + table(westTable, config) + '```';
+			standingsWestMinors = '```yaml\n' + table(westTable, config) + '```';
 		});
 	console.log('Initialized Standings');
 }

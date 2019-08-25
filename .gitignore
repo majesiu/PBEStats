@@ -4,3 +4,4 @@ sqldiff.exe
 sqlite3_analyzer.exe
 sqlite3.exe
 database.sqlite
+test.js

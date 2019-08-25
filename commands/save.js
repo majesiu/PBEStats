@@ -1,5 +1,5 @@
 const scrapPlayers = require('../modules/scrapPlayers');
-const playerPersistence = require('../modules/playerPersistence'); 
+const playerPersistence = require('../modules/playerPersistence');
 
 module.exports = {
 	name: 'save',
@@ -7,7 +7,7 @@ module.exports = {
 	cooldown: 5,
 	execute(message, args) {
 		const name = args.join(' ');
-		const id = scrapPlayers.getPlayers()[name];
+		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
 			playerPersistence.userPlayers.upsert({
 				username: message.author.id,

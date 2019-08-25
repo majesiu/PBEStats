@@ -24,6 +24,7 @@ client.on('ready', () => {
 	standings.initializeStandings();
 	scrapPlayers.initializePlayersList();
 	playerPersistence.userPlayers.sync();
+	playerPersistence.userTeams.sync();
 	console.log('Initialized Player List');
 	console.log('Ready!');
 });

@@ -1,31 +1,31 @@
-const http = require('http');
+// const http = require('http');
 const $ = require('cheerio');
 
-function getPlayerInfo(id) {
-	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
-		let data = '';
-		resp.on('data', (chunk) => {
-			data += chunk;
-		});
-		resp.on('end', () => {
-			const title = $('.reptitle ', data).text();
-			console.log(title);
-			/* if(title.startsWith('P')) {
-				console.log(parsePitcherPage(data));
-			}
-			else {
-				console.log(parseBatterPage(data));
-			}
-			console.log($('img[src*="player"]', data).attr('src'));
-			console.log('Team name: ' + $('a[href*="team"]', data).eq(0).text());*/
-			// console.log(parseAdvancedBattingStats(data));
-			// console.log(parseFieldingStats(data));
-			console.log(parseAdvancedPitcherStats(data));
-		});
-	}).on('error', (err) => {
-		console.log('Error: ' + err.message);
-	});
-}
+// function getPlayerInfo(id) {
+// 	http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+// 		let data = '';
+// 		resp.on('data', (chunk) => {
+// 			data += chunk;
+// 		});
+// 		resp.on('end', () => {
+// 			const title = $('.reptitle ', data).text();
+// 			console.log(title);
+// 			/* if(title.startsWith('P')) {
+// 				console.log(parsePitcherPage(data));
+// 			}
+// 			else {
+// 				console.log(parseBatterPage(data));
+// 			}
+// 			console.log($('img[src*="player"]', data).attr('src'));
+// 			console.log('Team name: ' + $('a[href*="team"]', data).eq(0).text());*/
+// 			// console.log(parseAdvancedBattingStats(data));
+// 			// console.log(parseFieldingStats(data));
+// 			console.log(parseAdvancedPitcherStats(data));
+// 		});
+// 	}).on('error', (err) => {
+// 		console.log('Error: ' + err.message);
+// 	});
+// }
 
 function parseBatterPage(data) {
 	let basicInfo = '';
@@ -103,5 +103,5 @@ exports.parseAdvancedBattingStats = parseAdvancedBattingStats;
 exports.parseFieldingStats = parseFieldingStats;
 exports.parseAdvancedPitcherStats = parseAdvancedPitcherStats;
 
-console.log(getPlayerInfo('458'));
+// console.log(getPlayerInfo('458'));
 // console.log(getPlayerInfo('48'));

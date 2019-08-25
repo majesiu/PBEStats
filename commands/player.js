@@ -32,14 +32,14 @@ module.exports = {
 		let name = args.join(' ');
 		if(name === '') {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
-			if(name === '') {
+			if(playername) {
 				name = playername.get('playername');
 			}
 			else {
 				return message.channel.send('Use !save Player Name to bind player to the !p command');
 			}
 		}
-		const id = scrapPlayers.getPlayers()[name];
+		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
 			http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
 				let data = '';
