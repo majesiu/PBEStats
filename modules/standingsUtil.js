@@ -53,7 +53,7 @@ function initializeStandings() {
 			for (let i = 0; i < West.length; i++) {
 				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
-			standingsWestMajors = '```yaml\n' + table(westTable, config) + '```';
+			standingsWestMajors = '```fix\n' + table(westTable, config) + '```';
 		});
 	tabletojson.convertUrl(
 		minorsStandingsLink,
@@ -71,7 +71,7 @@ function initializeStandings() {
 			for (let i = 0; i < West.length; i++) {
 				westTable.push([emotes[West[i].Team], West[i].W, West[i].L, West[i].PCT, West[i].Home, West[i].Away, West[i].Streak, West[i].Last10]);
 			}
-			standingsWestMinors = '```yaml\n' + table(westTable, config) + '```';
+			standingsWestMinors = '```fix\n' + table(westTable, config) + '```';
 		});
 	console.log('Initialized Standings');
 }
