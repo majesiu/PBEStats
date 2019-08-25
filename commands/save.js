@@ -16,7 +16,7 @@ module.exports = {
 			return message.channel.send(`Player ${name} is bound to you, use !p now!`);
 		}
 		else {
-			return message.channel.send(`Player ${name} not found`);
+			return message.channel.send(`Player ${name} not found type e.g. \`!save Paulo Di Stephano\` to bind player to yourself`);
 		}
 	},
 };

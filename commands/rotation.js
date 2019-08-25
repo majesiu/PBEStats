@@ -41,6 +41,58 @@ const teamIds = {
 	'kansas city hepcats': 28,
 };
 
+const teamAliases = {
+	'nyv' :'new york voyagers',
+	'fl' :'florida space rangers',
+	'obx' :'outer banks aviators',
+	'can:' :'cancun toros',
+	'pro' :'providence crabs',
+	'dvs' :'death valley scorpions',
+	'van' :'vancouver vandals',
+	'sas' :'san antonio sloths',
+	'uta' :'utah railroaders',
+	'nas' :'nashville stars',
+	'anc' :'anchorage wheelers',
+	'arm' :'amarillo armadillos',
+	'scss' :'state college swift steeds',
+	'kin' :'kingston mounties',
+	'dal' :'dallas dynamos',
+	'kch' :'kansas city hepcats',
+	'new york' :'new york voyagers',
+	'florida' :'florida space rangers',
+	'outer banks' :'outer banks aviators',
+	'cancun:' :'cancun toros',
+	'providence' :'providence crabs',
+	'death valley' :'death valley scorpions',
+	'vancouver' :'vancouver vandals',
+	'san antonio' :'san antonio sloths',
+	'utah' :'utah railroaders',
+	'nashville' :'nashville stars',
+	'ananchoragec' :'anchorage wheelers',
+	'amarillo' :'amarillo armadillos',
+	'state college' :'state college swift steeds',
+	'kingston' :'kingston mounties',
+	'dallas' :'dallas dynamos',
+	'kansas city' :'kansas city hepcats',
+	'voyagers' :'new york voyagers',
+	'rangers' :'florida space rangers',
+	'aviators' :'outer banks aviators',
+	'toros:' :'cancun toros',
+	'crabs' :'providence crabs',
+	'scorpions' :'death valley scorpions',
+	'vandals' :'vancouver vandals',
+	'sloths' :'san antonio sloths',
+	'railroaders' :'utah railroaders',
+	'stars' :'nashville stars',
+	'wheelers' :'anchorage wheelers',
+	'armadillos' :'amarillo armadillos',
+	'swift steeds' :'state college swift steeds',
+	'mounties' :'kingston mounties',
+	'dynamos' :'dallas dynamos',
+	'hepcats' :'kansas city hepcats',
+	'swifties' :'state college swift steeds',
+};
+
 module.exports = {
 	name: 'rotation',
 	aliases: ['r', 'bulpen', 'starters'],
@@ -48,6 +100,9 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
+		if(teamName.trim().toLowerCase() in teamAliases) {
+			teamName = teamAliases[teamName.trim().toLowerCase()];
+		}
 		if(teamName === '') {
 			const teamname = await playerPersistence.userTeams.findOne({ where: { username: message.author.id } });
 			if(teamname) {
