@@ -62,8 +62,14 @@ function initializePlayersList() {
 
 			resp.on('end', () => {
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
-					const key = $(element).text().toLowerCase().trim();
-					const id = $(element).attr('href').match(/\d+/)[0];  
+					let key = $(element).text().toLowerCase().trim().split(' ').filter(function(el) {
+						return el.length > 0;
+					});
+					key.forEach(function(el, ind, arr) {
+						arr[ind] = el.trim();
+					});
+					key = key.join(' ');
+					const id = $(element).attr('href').match(/\d+/)[0];
 					players[key] = id;
 				});
 			});
@@ -84,8 +90,14 @@ function initializePlayersList() {
 
 			resp.on('end', () => {
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
-					const key = $(element).text().toLowerCase().trim();
-					const id = $(element).attr('href').match(/\d+/)[0];  
+					let key = $(element).text().toLowerCase().trim().split(' ').filter(function(el) {
+						return el.length > 0;
+					});
+					key.forEach(function(el, ind, arr) {
+						arr[ind] = el.trim();
+					});
+					key = key.join(' ');
+					const id = $(element).attr('href').match(/\d+/)[0];
 					players[key] = id;
 				});
 			});
