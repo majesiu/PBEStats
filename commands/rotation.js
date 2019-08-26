@@ -45,7 +45,7 @@ const teamAliases = {
 	'nyv' :'new york voyagers',
 	'fl' :'florida space rangers',
 	'obx' :'outer banks aviators',
-	'can:' :'cancun toros',
+	'can' :'cancun toros',
 	'pro' :'providence crabs',
 	'dvs' :'death valley scorpions',
 	'van' :'vancouver vandals',
@@ -61,14 +61,14 @@ const teamAliases = {
 	'new york' :'new york voyagers',
 	'florida' :'florida space rangers',
 	'outer banks' :'outer banks aviators',
-	'cancun:' :'cancun toros',
+	'cancun' :'cancun toros',
 	'providence' :'providence crabs',
 	'death valley' :'death valley scorpions',
 	'vancouver' :'vancouver vandals',
 	'san antonio' :'san antonio sloths',
 	'utah' :'utah railroaders',
 	'nashville' :'nashville stars',
-	'ananchoragec' :'anchorage wheelers',
+	'ananchorage' :'anchorage wheelers',
 	'amarillo' :'amarillo armadillos',
 	'state college' :'state college swift steeds',
 	'kingston' :'kingston mounties',
@@ -77,7 +77,7 @@ const teamAliases = {
 	'voyagers' :'new york voyagers',
 	'rangers' :'florida space rangers',
 	'aviators' :'outer banks aviators',
-	'toros:' :'cancun toros',
+	'toros' :'cancun toros',
 	'crabs' :'providence crabs',
 	'scorpions' :'death valley scorpions',
 	'vandals' :'vancouver vandals',
@@ -96,7 +96,7 @@ const teamAliases = {
 module.exports = {
 	name: 'rotation',
 	aliases: ['r', 'bulpen', 'starters'],
-	description: 'Returns team pitchers info embed\nE.g. Type "!rotation Florida Space Rangers" to see Pitching Staff of that team',
+	description: 'Returns team pitchers info embed\nE.g. Type `!rotation Florida Space Rangers` to see Pitching Staff of that team',
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
@@ -109,7 +109,7 @@ module.exports = {
 				teamName = teamname.get('teamname');
 			}
 			else {
-				return message.channel.send('Use !bind Team Name to bind team to the !t command');
+				return message.channel.send('Use `!bind Team Name` to bind team to the !t !r !l commands');
 			}
 		}
 		const id = teamIds[teamName.toLowerCase().trim()];
