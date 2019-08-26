@@ -113,5 +113,18 @@ function getPlayers() {
 	return players;
 }
 
+function getPlayersNames() {
+	const playerNames = [];
+	for (const key in players) {
+		if (Object.prototype.hasOwnProperty.call(players, key)) {
+			const name = new Object();
+			name.fullName = key;
+			playerNames.push(name);
+		}
+	}
+	return playerNames;
+}
+
 exports.initializePlayersList = initializePlayersList;
 exports.getPlayers = getPlayers;
+exports.getPlayersNames = getPlayersNames;

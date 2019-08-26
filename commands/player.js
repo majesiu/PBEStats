@@ -3,6 +3,7 @@ const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
+const FuzzySearch = require('fuzzy-search');
 
 const teamColors = {
 	'New York Voyagers': 0xbabf88,
@@ -87,6 +88,22 @@ module.exports = {
 			});
 		}
 		else {
+			if(name.toLowerCase().trim() != '') {
+				const searcher = new FuzzySearch(scrapPlayers.getPlayersNames(), ['fullName'], {
+					caseSensitive: false,
+				});
+				const result = searcher.search(name.toLowerCase().trim());
+				if(result.length != 0) {
+					let suggestions = '';
+					result.forEach(function(res) {
+						suggestions += `\n - ${res.fullName}`;
+					});
+					return message.channel.send(`Player ${name} not found, but did you look maybe for: ${suggestions}`);
+				}
+				else {
+					return message.channel.send(`Player ${name} not found`);
+				}
+			}
 			return message.channel.send(`Player ${name} not found`);
 		}
 	},

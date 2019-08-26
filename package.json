@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.5.1",
+    "fuzzy-search": "^3.0.1",
     "sequelize": "^5.16.0",
     "sqlite3": "^4.1.0",
     "table": "^5.4.6",
