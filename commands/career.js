@@ -24,10 +24,15 @@ const teamColors = {
 
 module.exports = {
 	name: 'career',
-	aliases: ['c', 'c'],
-	description: 'Returns player info embed\nE.g. Type "!player Ed Barker" to see information about that player',
+	aliases: ['c', 'car', 'carer'],
+	description: 'Returns player info embed\nE.g. Type `!player Ed Barker` to see information about that players career',
 	cooldown: 5,
 	async execute(message, args, client) {
+		const leagueStartYear = 2016;
+		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
+		const seasonYear = seasonRegexp.test(args[args.length - 1]) ? parseInt(args[args.length - 1].match('\\d+')) + leagueStartYear : false;
+		let season = '';
+		if (seasonYear) season = args.pop();
 		let name = args.join(' ');
 		if(name === '') {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
@@ -35,7 +40,7 @@ module.exports = {
 				name = playername.get('playername');
 			}
 			else {
-				return message.channel.send('Use !save Player Name to bind player to the !p command');
+				return message.channel.send('Use `!save Player Name` to bind player to the !p !c command');
 			}
 		}
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
@@ -46,9 +51,8 @@ module.exports = {
 					data += chunk;
 				});
 				resp.on('end', () => {
-					const title = $('.reptitle ', data).text();
-					console.log(title);
-
+					let title = $('.reptitle ', data).text();
+					title += seasonYear ? ` in ${seasonYear} (${season})` : ' Career Totals';
 					return message.channel.send({ embed: {
 						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {
@@ -65,8 +69,13 @@ module.exports = {
 						url: `http://www.pbesim.com/players/player_${id}.html`,
 						fields: [
 							{
-								name: 'Basic Stats',
-								value:  title.startsWith('P') ? parsePitchingCareer(data) : parseHittingCareer(data),
+								name: 'Stats',
+								value:  title.startsWith('P') ? parseBasePitchingCareer(data, seasonYear) : parseBaseHittingCareer(data, seasonYear),
+								inline: true,
+							},
+							{
+								name: 'More Stats',
+								value:  title.startsWith('P') ? parseAdvPitchingCareer(data, seasonYear) : parseAdvHittingCareer(data, seasonYear),
 								inline: true,
 							}],
 						timestamp: new Date(),
@@ -86,9 +95,9 @@ module.exports = {
 	},
 };
 
-function parseHittingCareer(data) {
+function parseBaseHittingCareer(data, seasonYear) {
 	let basicInfo = '';
-	const set = $('th:contains(Total PBE)', data).parent().eq(0).children();
+	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear})`, data).parent().parent().eq(0).children() : $('th:contains(Total PBE)', data).parent().eq(0).children();
 	basicInfo += '\nGames: ' + set.eq(2).text();
 	basicInfo += '\nAt-bats: ' + set.eq(3).text();
 	basicInfo += '\nHits: ' + set.eq(4).text();
@@ -99,6 +108,13 @@ function parseHittingCareer(data) {
 	basicInfo += '\nRuns: ' + set.eq(9).text();
 	basicInfo += '\nWalks: ' + set.eq(10).text();
 	basicInfo += '\nStrikeouts: ' + set.eq(13).text();
+	return basicInfo;
+}
+
+
+function parseAdvHittingCareer(data, seasonYear) {
+	let basicInfo = '';
+	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear})`, data).parent().parent().eq(0).children() : $('th:contains(Total PBE)', data).parent().eq(0).children();
 	basicInfo += '\nStolen Bases: ' + set.eq(14).text();
 	basicInfo += '\nCaught Stealing: ' + set.eq(15).text();
 	basicInfo += '\nBatting Avg: ' + set.eq(16).text();
@@ -112,9 +128,9 @@ function parseHittingCareer(data) {
 }
 
 
-function parsePitchingCareer(data) {
+function parseBasePitchingCareer(data, seasonYear) {
 	let basicInfo = '';
-	const set = $('th:contains(Total PBE)', data).parent().eq(0).children();
+	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear})`, data).parent().parent().eq(0).children() : $('th:contains(Total PBE)', data).parent().eq(0).children();
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
 	basicInfo += '\nWins-Loses: ' + set.eq(4).text() + '-' + set.eq(5).text();
 	basicInfo += '\nSaves: ' + set.eq(6).text();
@@ -124,6 +140,13 @@ function parsePitchingCareer(data) {
 	basicInfo += '\nRuns Against: ' + set.eq(10).text();
 	basicInfo += '\nEarned Runs: ' + set.eq(11).text();
 	basicInfo += '\nHome Runs vs: ' + set.eq(12).text();
+	return basicInfo;
+}
+
+
+function parseAdvPitchingCareer(data, seasonYear) {
+	let basicInfo = '';
+	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear})`, data).parent().parent().eq(0).children() : $('th:contains(Total PBE)', data).parent().eq(0).children();
 	basicInfo += '\nBase on Balls: ' + set.eq(13).text();
 	basicInfo += '\nStrikeouts: ' + set.eq(14).text();
 	basicInfo += '\nComplete Games: ' + set.eq(15).text();
