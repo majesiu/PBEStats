@@ -1,5 +1,6 @@
 const playerPersistence = require('../modules/playerPersistence');
 
+
 const teamIds = {
 	'new york voyagers': 1,
 	'florida space rangers': 24,
@@ -23,7 +24,7 @@ const teamAliases = {
 	'nyv' :'new york voyagers',
 	'fl' :'florida space rangers',
 	'obx' :'outer banks aviators',
-	'can:' :'cancun toros',
+	'can' :'cancun toros',
 	'pro' :'providence crabs',
 	'dvs' :'death valley scorpions',
 	'van' :'vancouver vandals',
@@ -39,14 +40,14 @@ const teamAliases = {
 	'new york' :'new york voyagers',
 	'florida' :'florida space rangers',
 	'outer banks' :'outer banks aviators',
-	'cancun:' :'cancun toros',
+	'cancun' :'cancun toros',
 	'providence' :'providence crabs',
 	'death valley' :'death valley scorpions',
 	'vancouver' :'vancouver vandals',
 	'san antonio' :'san antonio sloths',
 	'utah' :'utah railroaders',
 	'nashville' :'nashville stars',
-	'ananchoragec' :'anchorage wheelers',
+	'ananchorage' :'anchorage wheelers',
 	'amarillo' :'amarillo armadillos',
 	'state college' :'state college swift steeds',
 	'kingston' :'kingston mounties',
@@ -55,7 +56,7 @@ const teamAliases = {
 	'voyagers' :'new york voyagers',
 	'rangers' :'florida space rangers',
 	'aviators' :'outer banks aviators',
-	'toros:' :'cancun toros',
+	'toros' :'cancun toros',
 	'crabs' :'providence crabs',
 	'scorpions' :'death valley scorpions',
 	'vandals' :'vancouver vandals',
