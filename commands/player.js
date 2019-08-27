@@ -98,7 +98,7 @@ module.exports = {
 					result.forEach(function(res) {
 						suggestions += `\n - ${res.fullName}`;
 					});
-					return message.channel.send(`Player ${name} not found, but did you look maybe for: ${suggestions}`);
+					return message.channel.send(`\`\`\`Player ${name} not found, but did you look maybe for: ${suggestions}\`\`\``);
 				}
 				else {
 					return message.channel.send(`Player ${name} not found`);
