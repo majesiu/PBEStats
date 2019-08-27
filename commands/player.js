@@ -95,7 +95,7 @@ module.exports = {
 				const result = searcher.search(name.toLowerCase().trim());
 				if(result.length != 0) {
 					let suggestions = '';
-					result.forEach(function(res) {
+					result.splice(0, 10).forEach(function(res) {
 						suggestions += `\n - ${res.fullName}`;
 					});
 					return message.channel.send(`\`\`\`Player ${name} not found, but did you look maybe for: ${suggestions}\`\`\``);
