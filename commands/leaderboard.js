@@ -4,10 +4,10 @@ const { table, getBorderCharacters } = require('table');
 
 
 module.exports = {
-	name: 'leadearboard',
-	description: 'Replies embed with Current PBE or MiLPBE Leadearboards\nE.g. Type `!lead Batting AVG` to see current PBE standings, `!lead Batting AVG m` for minors',
+	name: 'leaderboard',
+	description: 'Replies embed with Current PBE or MiLPBE leaderboard\nE.g. Type `!lead Batting AVG` to see current PBE standings, `!lead Batting AVG m` for minors',
 	cooldown: 5,
-	aliases: ['leadearboard', 'lead', 'top'],
+	aliases: ['leaderboard', 'lead', 'top'],
 	execute(message, args, client) {
 		const minorsMode = args[args.length - 1] === 'm' ? true : false;
 		if (minorsMode) args.pop();
