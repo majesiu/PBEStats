@@ -32,7 +32,7 @@ module.exports = {
 							url: 'http://www.pbesim.com/images/league_logos/pro_baseball_experience.png',
 						},
 						fields: [{
-							name: `${stat} Top 5 Leaderboard. Remember to type stat name including letter Capitalization`,
+							name: `${stat} Top 5 Leaderboard. Remember to type stat name, only stats from stats index page avalaible`,
 							value:  getStatsInfo(data, stat),
 							inline: true,
 						}],
@@ -65,7 +65,7 @@ const config = {
 
 function getStatsInfo(data, stat) {
 	const resultTable = [];
-	const set = $(`th:contains(${stat})`, data).parent().parent().children();
+	const set = $(`th:icontains(${stat})`, data).parent().parent().children();
 	console.log(set.length);
 	if(set.length >= 6) {
 		for (let i = 0; i < 6; i++) {
