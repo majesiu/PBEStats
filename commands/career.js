@@ -45,7 +45,7 @@ const idsToTeamNames = {
 module.exports = {
 	name: 'career',
 	aliases: ['c', 'car', 'carer'],
-	description: 'Returns player info embed\nE.g. Type `!player Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
+	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
 		const postseasonMode = args[args.length - 1] === 'p' ? true : false;

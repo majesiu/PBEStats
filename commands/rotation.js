@@ -95,7 +95,7 @@ const teamAliases = {
 
 module.exports = {
 	name: 'rotation',
-	aliases: ['r', 'bulpen', 'starters'],
+	aliases: ['r', 'bullpen', 'starters'],
 	description: 'Returns team pitchers info embed\nE.g. Type `!rotation Florida Space Rangers` to see Pitching Staff of that team',
 	cooldown: 5,
 	async execute(message, args, client) {
