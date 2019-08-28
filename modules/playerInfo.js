@@ -70,7 +70,7 @@ function parseFieldingStats(data) {
 function parsePitcherPage(data) {
 	let basicInfo = '';
 	basicInfo += '\nGames/Started: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text() + '/' + $('table .data > tbody > tr > td:nth-child(2)', data).eq(0).text();
-	basicInfo += '\nRecord: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
+	basicInfo += '\nWins-Losses: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
 	basicInfo += '\nSaves: ' + $('table .data > tbody > tr > td:nth-child(4)', data).eq(0).text();
 	basicInfo += '\nERA: ' + $('table .data > tbody > tr > td:nth-child(5)', data).eq(0).text();
 	basicInfo += '\nInnings Pitched: ' + $('table .data > tbody > tr > td:nth-child(6)', data).eq(0).text();

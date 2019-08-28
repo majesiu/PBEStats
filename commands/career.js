@@ -17,6 +17,7 @@ const teamColors = {
 	'anchorage wheelers': 0xa0fbff,
 	'amarillo armadillos': 0xffdb00,
 	'state college swift steeds': 0x519fd8,
+	'state college swift steeds ': 0x519fd8,
 	'kingston mounties': 0x460505,
 	'dallas dynamos': 0x17ece5,
 	'kansas city hepcats': 0xc9e5ff,
@@ -81,9 +82,12 @@ module.exports = {
 					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com') : 'http://www.pbesim.com/images/league_logos/pro_baseball_experience.png';
 					let color = teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()];
 					if(seasonYear) {
-						const seasonTeamId = $(`a[href*="team_year"]:contains(${seasonYear})`, data).attr('href').match(/_\d{1,2}_/g)[0].replace(/_/g, '');
-						color = teamColors[idsToTeamNames[seasonTeamId].trim()];
-						thumbnail = `http://www.pbesim.com/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
+						const selector = $(`a[href*="team_year"]:contains(${seasonYear})`, data).attr('href');
+						if (selector) {
+							const seasonTeamId = selector.match(/_\d{1,2}_/g)[0].replace(/_/g, '');
+							color = teamColors[idsToTeamNames[seasonTeamId].trim()];
+							thumbnail = `http://www.pbesim.com/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
+						}
 					}
 					return message.channel.send({ embed: {
 						color: color,
@@ -164,7 +168,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear})`, data).parent().parent().eq(postseasonMode ? 1 : 0).children() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0).children();
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
-	basicInfo += '\nWins-Loses: ' + set.eq(4).text() + '-' + set.eq(5).text();
+	basicInfo += '\nWins-Losses: ' + set.eq(4).text() + '-' + set.eq(5).text();
 	basicInfo += '\nSaves: ' + set.eq(6).text();
 	basicInfo += '\nERA: ' + set.eq(7).text();
 	basicInfo += '\nInnings Pitched: ' + set.eq(8).text();
