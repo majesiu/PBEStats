@@ -133,20 +133,20 @@ module.exports = {
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = ' ';
-	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
-			if(set.length > 1 && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
+			if((set.length > 1 || minorsMode) && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
 				set = set.last();
 			}
 			else {
-				return 'Player didn\'t particpated in postseason that year';
+				return 'Player didn\'t participate in postseason that year';
 			}
 		}
 		else if(set.length > 1) {
 			if(set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
-				set = set.eq(-2);
+				set = set.eq(minorsMode ? 0 : -2);
 			}
 			else {
 				set = set.eq(minorsMode ? 0 : -1);
@@ -186,20 +186,20 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = ' ';
-	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
-			if(set.length > 1 && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
+			if((set.length > 1 || minorsMode) && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
 				set = set.last();
 			}
 			else {
-				return 'Player didn\'t particpated in postseason that year';
+				return 'Player didn\'t participate in postseason that year';
 			}
 		}
 		else if(set.length > 1) {
 			if(set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
-				set = set.eq(-2);
+				set = set.eq(minorsMode ? -3 : -2);
 			}
 			else {
 				set = set.eq(minorsMode ? -2 : -1);
