@@ -1,4 +1,3 @@
-const playerInfo = require('../modules/playerInfo.js');
 const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
 const $ = require('cheerio');
@@ -68,12 +67,12 @@ module.exports = {
 						fields: [
 							{
 								name: 'Basic Stats',
-								value:  title.startsWith('P') ? playerInfo.parsePitcherPage(data) : playerInfo.parseBatterPage(data),
+								value:  title.startsWith('P') ? parsePitcherPage(data) : parseBatterPage(data),
 								inline: true,
 							},
 							{
 								name: 'Advanced Stats',
-								value:  title.startsWith('P') ? playerInfo.parseAdvancedPitcherStats(data) : playerInfo.parseAdvancedBattingStats(data),
+								value:  title.startsWith('P') ? parseAdvancedPitcherStats(data) : parseAdvancedBattingStats(data),
 								inline: true,
 							}],
 						timestamp: new Date(),
@@ -108,3 +107,72 @@ module.exports = {
 		}
 	},
 };
+
+function parseBatterPage(data) {
+	let basicInfo = '';
+	basicInfo += '\nGames: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text();
+	basicInfo += '\nAt-bats: ' + $('table .data > tbody > tr > td:nth-child(2)', data).eq(0).text();
+	basicInfo += '\nHits: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
+	basicInfo += '\nDoubles: ' + $('table .data > tbody > tr > td:nth-child(4)', data).eq(0).text();
+	basicInfo += '\nTriples: ' + $('table .data > tbody > tr > td:nth-child(5)', data).eq(0).text();
+	basicInfo += '\nHome Runs: ' + $('table .data > tbody > tr > td:nth-child(6)', data).eq(0).text();
+	basicInfo += '\nRuns Batted In: ' + $('table .data > tbody > tr > td:nth-child(7)', data).eq(0).text();
+	basicInfo += '\nWalks: ' + $('table .data > tbody > tr > td:nth-child(8)', data).eq(0).text();
+	basicInfo += '\nStrikeouts: ' + $('table .data > tbody > tr > td:nth-child(9)', data).eq(0).text();
+	basicInfo += '\nBatting Avg: ' + $('table .data > tbody > tr > td:nth-child(10)', data).eq(0).text();
+	basicInfo += '\nOn-base Pct: ' + $('table .data > tbody > tr > td:nth-child(11)', data).eq(0).text();
+	basicInfo += '\nSlugging Pct: ' + $('table .data > tbody > tr > td:nth-child(12)', data).eq(0).text();
+	basicInfo += '\nStolen Bases: ' + $('table .data > tbody > tr > td:nth-child(13)', data).eq(0).text();
+	basicInfo += '\nWAR: ' + $('table .data > tbody > tr > td:nth-child(14)', data).eq(0).text();
+	return basicInfo;
+}
+function parseAdvancedBattingStats(data) {
+	let advancedInfo = '';
+
+	advancedInfo += '\nwOBA: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text();
+	advancedInfo += '\nISO: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(17)', data).text();
+	advancedInfo += '\nwRC+: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(18)', data).text();
+	advancedInfo += '\nRC: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(15)', data).text();
+	advancedInfo += '\nRC/27: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(16)', data).text();
+	advancedInfo += '\nTotal Bases: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(10)', data).text();
+	return advancedInfo + parseFieldingStats(data);
+}
+function parseFieldingStats(data) {
+	let fieldingInfo = '\n**Fielding**';
+	fieldingInfo += '\nPosition: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(1).text();
+	fieldingInfo += '\nPutouts: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(4).text();
+	fieldingInfo += '\nAssists: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(5).text();
+	fieldingInfo += '\nErrors: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(8).text();
+	fieldingInfo += '\nRange Factor: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(11).text();
+	fieldingInfo += '\nZone Rating: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(12).text();
+	fieldingInfo += '\nEfficiency: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(13).text();
+	return fieldingInfo;
+}
+function parsePitcherPage(data) {
+	let basicInfo = '';
+	basicInfo += '\nGames/Started: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text() + '/' + $('table .data > tbody > tr > td:nth-child(2)', data).eq(0).text();
+	basicInfo += '\nWins-Losses: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
+	basicInfo += '\nSaves: ' + $('table .data > tbody > tr > td:nth-child(4)', data).eq(0).text();
+	basicInfo += '\nERA: ' + $('table .data > tbody > tr > td:nth-child(5)', data).eq(0).text();
+	basicInfo += '\nInnings Pitched: ' + $('table .data > tbody > tr > td:nth-child(6)', data).eq(0).text();
+	basicInfo += '\nHits Against: ' + $('table .data > tbody > tr > td:nth-child(7)', data).eq(0).text();
+	basicInfo += '\nHome Runs vs: ' + $('table .data > tbody > tr > td:nth-child(8)', data).eq(0).text();
+	basicInfo += '\nBase on Balls: ' + $('table .data > tbody > tr > td:nth-child(9)', data).eq(0).text();
+	basicInfo += '\nStrikeouts: ' + $('table .data > tbody > tr > td:nth-child(10)', data).eq(0).text();
+	basicInfo += '\nWHIP: ' + $('table .data > tbody > tr > td:nth-child(11)', data).eq(0).text();
+	basicInfo += '\nWAR: ' + $('table .data > tbody > tr > td:nth-child(12)', data).eq(0).text();
+	return basicInfo;
+}
+function parseAdvancedPitcherStats(data) {
+	let advancedInfo = '';
+	advancedInfo += '\nFIP: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(11)', data).text();
+	advancedInfo += '\nFIP-: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(13)', data).text();
+	advancedInfo += '\nK/9: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(9)', data).text();
+	advancedInfo += '\nBB/9: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(10)', data).text();
+	advancedInfo += '\nH/9: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(8)', data).text();
+	advancedInfo += '\nR/9: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(7)', data).text();
+	advancedInfo += '\nCG/CG%: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(15)', data).text() + '/' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text() + '%';
+	advancedInfo += '\nShutouts: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(17)', data).text();
+	advancedInfo += '\nQS/QS%: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(18)', data).text() + '/' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(19)', data).text() + '%';
+	return advancedInfo;
+}
