@@ -105,8 +105,8 @@ module.exports = {
 						url: `http://www.pbesim.com/players/player_${id}.html`,
 						fields: [
 							{
-								name: 'Batting Stats',
-								value:  (title.startsWith('P') ? parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) : parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode)) + (title.startsWith('P') ? parseAdvPitchingCareer(data, seasonYear, minorsMode, postseasonMode) : parseAdvHittingCareer(data, seasonYear, minorsMode, postseasonMode)),
+								name: title.startsWith('P') ? 'Pitching Stats' : 'Batting Stats',
+								value:  title.startsWith('P') ? parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) : parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode),
 								inline: true,
 							},
 							{
@@ -132,8 +132,9 @@ module.exports = {
 };
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = '';
+	let basicInfo = ' ';
 	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
 			if(set.length > 1 && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
@@ -148,7 +149,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 				set = set.eq(-2);
 			}
 			else {
-				set = set.last();
+				set = set.eq(minorsMode ? 0 : -1);
 			}
 		}
 		else {
@@ -156,6 +157,9 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 		}
 	}
 	set = set.children();
+	if(set.eq(2).text() === '') {
+		return 'Player haven\'t played any games that season';
+	}
 	basicInfo += '\nGames: ' + set.eq(2).text();
 	basicInfo += '\nAt-bats: ' + set.eq(3).text();
 	basicInfo += '\nHits: ' + set.eq(4).text();
@@ -166,34 +170,6 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	basicInfo += '\nRuns: ' + set.eq(9).text();
 	basicInfo += '\nWalks: ' + set.eq(10).text();
 	basicInfo += '\nStrikeouts: ' + set.eq(13).text();
-	return basicInfo;
-}
-
-function parseAdvHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = '';
-	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
-	if (seasonYear) {
-		if (postseasonMode) {
-			if(set.length > 1 && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
-				set = set.last();
-			}
-			else {
-				return '\n';
-			}
-		}
-		else if(set.length > 1) {
-			if(set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
-				set = set.eq(-2);
-			}
-			else {
-				set = set.last();
-			}
-		}
-		else {
-			set = set.eq(0);
-		}
-	}
-	set = set.children();
 	basicInfo += '\nStolen Bases: ' + set.eq(14).text();
 	basicInfo += '\nCaught Stealing: ' + set.eq(15).text();
 	basicInfo += '\nBatting Avg: ' + set.eq(16).text();
@@ -209,8 +185,9 @@ function parseAdvHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = '';
+	let basicInfo = ' ';
 	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
 			if(set.length > 1 && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
@@ -221,11 +198,11 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 			}
 		}
 		else if(set.length > 1) {
-			if(set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
+			if(set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
 				set = set.eq(-2);
 			}
 			else {
-				set = set.last();
+				set = set.eq(minorsMode ? -2 : -1);
 			}
 		}
 		else {
@@ -233,6 +210,9 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 		}
 	}
 	set = set.children();
+	if(set.eq(2).text() === '') {
+		return 'Player haven\'t played any games that season';
+	}
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
 	basicInfo += '\nWins-Losses: ' + set.eq(4).text() + '-' + set.eq(5).text();
 	basicInfo += '\nSaves: ' + set.eq(6).text();
@@ -242,34 +222,6 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	basicInfo += '\nRuns Against: ' + set.eq(10).text();
 	basicInfo += '\nEarned Runs: ' + set.eq(11).text();
 	basicInfo += '\nHome Runs vs: ' + set.eq(12).text();
-	return basicInfo;
-}
-
-function parseAdvPitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = '';
-	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
-	if (seasonYear) {
-		if (postseasonMode) {
-			if(set.length > 1 && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
-				set = set.last();
-			}
-			else {
-				return '\n';
-			}
-		}
-		else if(set.length > 1) {
-			if(set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
-				set = set.eq(-2);
-			}
-			else {
-				set = set.last();
-			}
-		}
-		else {
-			set = set.eq(0);
-		}
-	}
-	set = set.children();
 	basicInfo += '\nBase on Balls: ' + set.eq(13).text();
 	basicInfo += '\nStrikeouts: ' + set.eq(14).text();
 	basicInfo += '\nComplete Games: ' + set.eq(15).text();
@@ -285,12 +237,15 @@ function parseAdvPitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseFieldingCareer(data, seasonYear, minorsMode) {
-	let basicInfo = '';
+	let basicInfo = ' ';
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $('th:contains(TOTAL)', data).parent();
+	if (set.length === 0) {
+		return 'Player haven\'t played in the field that season';
+	}
 	for (let i = 0; i < set.length; i++) {
 		const row = set.eq(i).children();
 		const gameRequired = seasonYear ? 10 : 100;
-		if(parseInt(row.eq(2).text()) > gameRequired) {
+		if(parseInt(row.eq(2).text()) > gameRequired && isNaN(parseInt(row.eq(1).text()))) {
 			basicInfo += '\nPosition: **' + row.eq(1).text();
 			basicInfo += '**\nGames: ' + row.eq(2).text();
 			basicInfo += '\nPutouts: ' + row.eq(4).text();
