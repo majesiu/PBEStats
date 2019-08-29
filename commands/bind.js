@@ -74,7 +74,7 @@ const teamAliases = {
 
 module.exports = {
 	name: 'bind',
-	description: 'Binds team to the user, so they don\'t have to specify when using !t !team, !l !lineup, !r !rotation\nE.g. Type "!bind Death Valley Scorpions" and try !t after',
+	description: 'Binds team to the user, so they don\'t have to specify when using !t !team, !l !lineup, !r !rotation\nE.g. Type `!bind Death Valley Scorpions` and try !t after',
 	cooldown: 5,
 	execute(message, args) {
 		let name = args.join(' ');

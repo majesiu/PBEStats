@@ -26,7 +26,7 @@ const teamColors = {
 module.exports = {
 	name: 'player',
 	aliases: ['p', 'plyr'],
-	description: 'Returns player info embed\nE.g. Type "!player Ed Barker" to see information about that player',
+	description: 'Returns player info embed\nE.g. Type `!player Ed Barker` to see information about that player',
 	cooldown: 5,
 	async execute(message, args, client) {
 		let name = args.join(' ');
