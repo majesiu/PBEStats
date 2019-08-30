@@ -186,7 +186,8 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
-	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(0);
+	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
 			if((minorsMode || set.length > 1) && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
