@@ -245,7 +245,7 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 	for (let i = 0; i < set.length; i++) {
 		const row = set.eq(i).children();
 		const gameRequired = seasonYear ? 10 : 100;
-		if(parseInt(row.eq(2).text()) > gameRequired && isNaN(parseInt(row.eq(1).text()))) {
+		if(parseInt(row.eq(2).text()) > gameRequired && ['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
 			basicInfo += '\nPosition: **' + row.eq(1).text();
 			basicInfo += '**\nGames: ' + row.eq(2).text();
 			basicInfo += '\nPutouts: ' + row.eq(4).text();
