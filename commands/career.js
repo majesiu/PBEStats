@@ -132,7 +132,7 @@ module.exports = {
 };
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = ' ';
+	let basicInfo = '';
 	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	console.log(set.length);
 	if (seasonYear) {
@@ -158,7 +158,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	}
 	set = set.children();
 	if(set.eq(2).text() === '') {
-		return 'Player haven\'t played any games that season';
+		return `Player haven't played any games ${seasonYear ? 'that season' : 'in his career'}`;
 	}
 	basicInfo += '\nGames: ' + set.eq(2).text();
 	basicInfo += '\nAt-bats: ' + set.eq(3).text();
@@ -185,8 +185,8 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
-	let basicInfo = ' ';
-	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
+	let basicInfo = '';
+	let set = seasonYear ? $(`a:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})`, data).parent().parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(0);
 	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
@@ -211,7 +211,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	}
 	set = set.children();
 	if(set.eq(2).text() === '') {
-		return 'Player haven\'t played any games that season';
+		return `Player haven't played any games ${seasonYear ? 'that season' : 'in his career'}`;
 	}
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
 	basicInfo += '\nWins-Losses: ' + set.eq(4).text() + '-' + set.eq(5).text();
@@ -237,8 +237,10 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseFieldingCareer(data, seasonYear, minorsMode) {
-	let basicInfo = ' ';
+	let basicInfo = '';
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $('th:contains(TOTAL)', data).parent();
+	console.log(set.length);
+	console.log(set.text());
 	if (set.length === 0) {
 		return 'Player haven\'t played in the field that season';
 	}
@@ -255,6 +257,9 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 			basicInfo += '\nZone Rating: ' + row.eq(12).text();
 			basicInfo += '\nEfficiency: ' + row.eq(13).text();
 		}
+	}
+	if(basicInfo === '') {
+		basicInfo += 'Player didn\'t player required amount of games in the field - 10 for a season, 100 for career';
 	}
 	return basicInfo;
 }
