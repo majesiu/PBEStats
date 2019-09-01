@@ -26,6 +26,7 @@ const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
+const career = require('./career');
 
 const teamColors = {
 	'New York Voyagers': 0xbabf88,
@@ -53,6 +54,13 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let name = args.join(' ');
+		const postseasonMode = args[args.length - 1] === 'p' ? true : false;
+		if (postseasonMode) return career.execute(message, args, client);
+		const minorsMode = args[args.length - 1] === 'm' ? true : false;
+		if (minorsMode) return career.execute(message, args, client);
+		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
+		const seasonYear = seasonRegexp.test(args[args.length - 1]) ? parseInt(args[args.length - 1].match('\\d+')) + 2016 : false;
+		if (seasonYear) return career.execute(message, args, client);
 		if(name === '') {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
 			if(playername) {
