@@ -28,6 +28,8 @@ const { prefix, token } = require('./config.json');
 const standings = require('./modules/standingsUtil.js');
 const scrapPlayers = require('./modules/scrapPlayers.js');
 const playerPersistence = require('./modules/playerPersistence');
+const CronJob = require('cron').CronJob;
+
 
 const client = new Discord.Client();
 
@@ -51,8 +53,22 @@ client.on('ready', () => {
 	playerPersistence.userPlayers.sync();
 	playerPersistence.userTeams.sync();
 	console.log('Persistence Synchronized');
+	initCrons();
+	console.log('Initialized Crons');
 	console.log('Ready!');
 });
+
+function initCrons() {
+	console.log('Before job instantiation');
+	const job = new CronJob('00 00 02 * * *', function() {
+		standings.initializeStandings();
+		console.log('Cron Synchronized Standings');
+		scrapPlayers.initializePlayersList();
+		console.log('Cron Players Lists');
+	});
+	console.log('After job instantiation');
+	job.start();
+}
 
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
