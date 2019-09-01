@@ -2,17 +2,17 @@
 * MIT License
 *
 * Copyright (c) 2019 Paweł Majewski
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all
 * copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,6 +25,7 @@ const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
+const FuzzySearch = require('fuzzy-search');
 
 const teamColors = {
 	'new york voyagers': 0xbabf88,
@@ -150,6 +151,22 @@ module.exports = {
 			});
 		}
 		else {
+			if(name.toLowerCase().trim() != '') {
+				const searcher = new FuzzySearch(scrapPlayers.getPlayersNames(), ['fullName'], {
+					caseSensitive: false,
+				});
+				const result = searcher.search(name.toLowerCase().trim());
+				if(result.length != 0) {
+					let suggestions = '';
+					result.splice(0, 10).forEach(function(res) {
+						suggestions += `\n - ${res.fullName}`;
+					});
+					return message.channel.send(`\`\`\`Player ${name} not found, but did you look maybe for: ${suggestions}\`\`\``);
+				}
+				else {
+					return message.channel.send(`Player ${name} not found`);
+				}
+			}
 			return message.channel.send(`Player ${name} not found`);
 		}
 	},
@@ -261,26 +278,73 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 
 function parseFieldingCareer(data, seasonYear, minorsMode) {
 	let basicInfo = '';
-	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $('th:contains(TOTAL)', data).parent();
+	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $(`a[href*="team_year"]:contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent();
 	if (set.length === 0) {
 		return 'Player haven\'t played in the field that season';
 	}
-	for (let i = 0; i < set.length; i++) {
-		const row = set.eq(i).children();
-		const gameRequired = seasonYear ? 10 : 100;
-		if(parseInt(row.eq(2).text()) > gameRequired && ['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
-			basicInfo += '\nPosition: **' + row.eq(1).text();
-			basicInfo += '**\nGames: ' + row.eq(2).text();
-			basicInfo += '\nPutouts: ' + row.eq(4).text();
-			basicInfo += '\nAssists: ' + row.eq(5).text();
-			basicInfo += '\nErrors: ' + row.eq(8).text();
-			basicInfo += '\nRange Factor: ' + row.eq(11).text();
-			basicInfo += '\nZone Rating: ' + row.eq(12).text();
-			basicInfo += '\nEfficiency: ' + row.eq(13).text();
+	const gameRequired = seasonYear ? 10 : 50;
+	if(seasonYear) {
+		for (let i = 0; i < set.length; i++) {
+			const row = set.eq(i).children();
+			if(parseInt(row.eq(2).text()) > gameRequired && ['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+				basicInfo += '\nPosition: **' + row.eq(1).text();
+				basicInfo += '**\nGames: ' + row.eq(2).text();
+				basicInfo += '\nPutouts: ' + row.eq(4).text();
+				basicInfo += '\nAssists: ' + row.eq(5).text();
+				basicInfo += '\nErrors: ' + row.eq(8).text();
+				basicInfo += '\nRange Factor: ' + row.eq(11).text();
+				basicInfo += '\nZone Rating: ' + row.eq(12).text();
+				basicInfo += '\nEfficiency: ' + row.eq(13).text();
+			}
+		}
+	}
+	else {
+		const positionBuckets = [];
+		for (let i = 0; i < set.length; i++) {
+			const row = set.eq(i).children();
+			if(['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+				let position = new Object();
+				position.name = row.eq(1).text();
+				const previous = positionBuckets.find(x => x.name === position.name);
+				if(previous) {
+					position = previous;
+				}
+				else {
+					position.games = 0;
+					position.putouts = 0;
+					position.assists = 0;
+					position.totalInnings = 0;
+					position.errors = 0;
+					position.rangeFactor = 0;
+					position.zoneRating = 0;
+					position.efficiency = 0;
+				}
+				position.games += parseInt(row.eq(2).text());
+				position.putouts += parseInt(row.eq(4).text());
+				position.assists += parseInt(row.eq(5).text());
+				position.totalInnings += parseFloat(row.eq(10).text());
+				position.errors += parseInt(row.eq(8).text());
+				position.rangeFactor += parseFloat(row.eq(11).text()) * parseFloat(row.eq(10).text());
+				position.zoneRating += parseFloat(row.eq(12).text());
+				position.efficiency += parseFloat(row.eq(13).text()) * parseFloat(row.eq(10).text());
+				if(!previous) positionBuckets.push(position);
+			}
+		}
+		for(const position of positionBuckets) {
+			if(position.games > gameRequired) {
+				basicInfo += '\nPosition: **' + position.name;
+				basicInfo += '**\nGames: ' + position.games;
+				basicInfo += '\nPutouts: ' + position.putouts;
+				basicInfo += '\nAssists: ' + position.assists;
+				basicInfo += '\nErrors: ' + position.errors;
+				basicInfo += '\nRange Factor: ' + (position.rangeFactor / position.totalInnings).toFixed(2);
+				basicInfo += '\nZone Rating: ' + position.zoneRating.toFixed(1);
+				basicInfo += '\nEfficiency: ' + (position.efficiency / position.totalInnings).toFixed(3);
+			}
 		}
 	}
 	if(basicInfo === '') {
-		basicInfo += 'Player didn\'t player required amount of games in the field - 10 for a season, 100 for career';
+		basicInfo += 'Player didn\'t player required amount of games in the field - 10 for a season, 50 for career';
 	}
 	return basicInfo;
 }
