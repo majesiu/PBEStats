@@ -167,11 +167,12 @@ function parseAdvancedBattingStats(data) {
 	advancedInfo += '\nTotal Bases: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(10)', data).text();
 	return advancedInfo + parseFieldingStats(data);
 }
+
 function parseFieldingStats(data) {
 	let fieldingInfo = '\n**Fielding**';
 	const seasonYear = 2029;
-	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB})`, data).parent().parent();
-	const setMinors = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- R})`, data).parent().parent();
+	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB)`, data).parent().parent();
+	const setMinors = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- R)`, data).parent().parent();
 	for (let i = 0; i < set.length; i++) {
 		const row = set.eq(i).children();
 		if(['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
