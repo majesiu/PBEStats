@@ -98,12 +98,12 @@ module.exports = {
 						fields: [
 							{
 								name: 'Basic Stats',
-								value:  current ? (title.startsWith('P') ? parsePitcherPage(data) : parseBatterPage(data)) : 'Played dind\'t participated in current season',
+								value:  title.startsWith('P') ? parsePitcherPage(data) : parseBatterPage(data),
 								inline: true,
 							},
 							{
 								name: 'Advanced Stats',
-								value:  current ? (title.startsWith('P') ? parseAdvancedPitcherStats(data) : parseAdvancedBattingStats(data)) : 'Use !p [Sx] e.g. !p S11 instead',
+								value:  title.startsWith('P') ? parseAdvancedPitcherStats(data) : parseAdvancedBattingStats(data),
 								inline: true,
 							}],
 						timestamp: new Date(),
