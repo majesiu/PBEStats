@@ -80,7 +80,7 @@ module.exports = {
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
 					console.log(title);
-
+					const current = $('table:nth-child(1) > tbody > tr:nth-child(1) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(1) > div:nth-child(4)', data).text().slice(-4) === '2029';
 					return message.channel.send({ embed: {
 						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {
@@ -98,12 +98,12 @@ module.exports = {
 						fields: [
 							{
 								name: 'Basic Stats',
-								value:  title.startsWith('P') ? parsePitcherPage(data) : parseBatterPage(data),
+								value:  current ? (title.startsWith('P') ? parsePitcherPage(data) : parseBatterPage(data)) : 'Played dind\'t participated in current season',
 								inline: true,
 							},
 							{
 								name: 'Advanced Stats',
-								value:  title.startsWith('P') ? parseAdvancedPitcherStats(data) : parseAdvancedBattingStats(data),
+								value:  current ? (title.startsWith('P') ? parseAdvancedPitcherStats(data) : parseAdvancedBattingStats(data)) : 'Use !p [Sx] e.g. !p S11 instead',
 								inline: true,
 							}],
 						timestamp: new Date(),
@@ -159,7 +159,6 @@ function parseBatterPage(data) {
 }
 function parseAdvancedBattingStats(data) {
 	let advancedInfo = '';
-
 	advancedInfo += '\nwOBA: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text();
 	advancedInfo += '\nISO: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(17)', data).text();
 	advancedInfo += '\nwRC+: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(18)', data).text();
@@ -170,13 +169,36 @@ function parseAdvancedBattingStats(data) {
 }
 function parseFieldingStats(data) {
 	let fieldingInfo = '\n**Fielding**';
-	fieldingInfo += '\nPosition: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(1).text();
-	fieldingInfo += '\nPutouts: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(4).text();
-	fieldingInfo += '\nAssists: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(5).text();
-	fieldingInfo += '\nErrors: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(8).text();
-	fieldingInfo += '\nRange Factor: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(11).text();
-	fieldingInfo += '\nZone Rating: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(12).text();
-	fieldingInfo += '\nEfficiency: ' + $('th:contains(CAREER FIELDING STATS)', data).parent().parent().parent().next().children().children('tr:not(tr .hsi)').last().children().eq(13).text();
+	const seasonYear = 2029;
+	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB})`, data).parent().parent();
+	const setMinors = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- R})`, data).parent().parent();
+	for (let i = 0; i < set.length; i++) {
+		const row = set.eq(i).children();
+		if(['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+			fieldingInfo += '\nPosition: **' + row.eq(1).text();
+			fieldingInfo += '**\nGames: ' + row.eq(2).text();
+			fieldingInfo += '\nPutouts: ' + row.eq(4).text();
+			fieldingInfo += '\nAssists: ' + row.eq(5).text();
+			fieldingInfo += '\nErrors: ' + row.eq(8).text();
+			fieldingInfo += '\nRange Factor: ' + row.eq(11).text();
+			fieldingInfo += '\nZone Rating: ' + row.eq(12).text();
+			fieldingInfo += '\nEfficiency: ' + row.eq(13).text();
+		}
+	}
+	for (let i = 0; i < setMinors.length; i++) {
+		const row = setMinors.eq(i).children();
+		if(['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+			fieldingInfo += '\nPosition: **' + row.eq(1).text();
+			fieldingInfo += '**\nGames: ' + row.eq(2).text();
+			fieldingInfo += '\nPutouts: ' + row.eq(4).text();
+			fieldingInfo += '\nAssists: ' + row.eq(5).text();
+			fieldingInfo += '\nErrors: ' + row.eq(8).text();
+			fieldingInfo += '\nRange Factor: ' + row.eq(11).text();
+			fieldingInfo += '\nZone Rating: ' + row.eq(12).text();
+			fieldingInfo += '\nEfficiency: ' + row.eq(13).text();
+		}
+	}
+	if (fieldingInfo === '\n**Fielding**') fieldingInfo += '\nPlayer hasn\'t played in \nthe field in current year';
 	return fieldingInfo;
 }
 function parsePitcherPage(data) {
