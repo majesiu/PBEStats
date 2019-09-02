@@ -198,7 +198,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	}
 	set = set.children();
 	if(set.eq(2).text() === '') {
-		return `Player haven't played any games ${seasonYear ? 'that season' : 'in his career'}`;
+		return `Player haven't played any games ${seasonYear ? 'that season' : `in his ${postseasonMode ? 'postseason ' : ''} ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	basicInfo += '\nGames: ' + set.eq(2).text();
 	basicInfo += '\nAt-bats: ' + set.eq(3).text();
@@ -251,7 +251,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	}
 	set = set.children();
 	if(set.eq(2).text() === '') {
-		return `Player haven't played any games ${seasonYear ? 'that season' : 'in his career'}`;
+		return `Player haven't played any games ${seasonYear ? 'that season' : `in his ${postseasonMode ? 'postseason ' : ''} ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
 	basicInfo += '\nWins-Losses: ' + set.eq(4).text() + '-' + set.eq(5).text();
@@ -280,7 +280,7 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 	let basicInfo = '';
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $(`a[href*="team_year"]:contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent();
 	if (set.length === 0) {
-		return 'Player haven\'t played in the field that season';
+		return `Player haven't played any games in the field ${seasonYear ? 'that season' : `in his ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	const gameRequired = seasonYear ? 10 : 50;
 	if(seasonYear) {
