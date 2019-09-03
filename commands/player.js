@@ -80,7 +80,6 @@ module.exports = {
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
 					console.log(title);
-					const current = $('table:nth-child(1) > tbody > tr:nth-child(1) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(1) > div:nth-child(4)', data).text().slice(-4) === '2029';
 					return message.channel.send({ embed: {
 						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {
