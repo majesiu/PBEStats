@@ -72,16 +72,11 @@ module.exports = {
 				});
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
-					console.log(title);
-
 					return message.channel.send({ embed: {
 						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,
-						},
-						image: {
-							url: $('img[src*="player"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
 						},
 						title: title,
 						url: `http://www.pbesim.com/players/player_${id}.html`,
@@ -162,6 +157,5 @@ function last10(data) {
 		}
 		tableData.push(tableRow);
 	}
-	console.log(tableData);
 	return '```CSS\n' + table(tableData, config) + '```';
 }
