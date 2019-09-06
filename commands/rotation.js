@@ -144,7 +144,6 @@ module.exports = {
 				});
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
-					console.log(title);
 					return message.channel.send({ embed: {
 						color: teamColors[title.replace('(R)', '').toLowerCase().trim()],
 						author: {

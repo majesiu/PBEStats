@@ -79,8 +79,6 @@ module.exports = {
 				});
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
-					console.log(title);
-
 					return message.channel.send({ embed: {
 						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
 						author: {

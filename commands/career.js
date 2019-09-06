@@ -72,7 +72,6 @@ module.exports = {
 	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
-		console.log(`Career args: ${args}`);
 		const postseasonMode = args[args.length - 1] === 'p' ? true : false;
 		if (postseasonMode) args.pop();
 		const minorsMode = args[args.length - 1] === 'm' ? true : false;
@@ -227,7 +226,6 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
-	console.log(set.length);
 	if (seasonYear) {
 		if (postseasonMode) {
 			if((minorsMode || set.length > 1) && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
