@@ -87,10 +87,10 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						image: {
-							url: $('img[src*="player"]', data).attr('src').replace('..', '${domainUrl}'),
+							url: $('img[src*="player"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						thumbnail: {
-							url: $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}') : '${domainUrl}/images/league_logos/pro_baseball_experience.png',
+							url: $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`,
 						},
 						title: title,
 						url: `${domainUrl}/players/player_${id}.html`,

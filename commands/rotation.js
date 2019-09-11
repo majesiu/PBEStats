@@ -152,7 +152,7 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						thumbnail: {
-							url: $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}'),
+							url: $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						title: title,
 						url: `${domainUrl}/players/player_${id}.html`,

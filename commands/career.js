@@ -84,7 +84,7 @@ module.exports = {
 					title += seasonYear ? ` in ${seasonYear} (${season.toUpperCase()})` : ' Career Totals';
 					title += minorsMode ? ' MiLPBE' : ' PBE';
 					title += postseasonMode ? ' Postseason' : ' Regular Season';
-					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}') : '${domainUrl}/images/league_logos/pro_baseball_experience.png';
+					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`;
 					let color = teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()];
 					if(seasonYear) {
 						const selector = $(`a[href*="team"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).last().attr('href');
@@ -101,7 +101,7 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						image: {
-							url: $('img[src*="player"]', data).attr('src').replace('..', '${domainUrl}'),
+							url: $('img[src*="player"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						thumbnail: {
 							url: thumbnail,
