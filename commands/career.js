@@ -28,7 +28,6 @@ const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const { domainUrl, teamColors, idsToTeamNames } = require('../environment.json');
 
-
 module.exports = {
 	name: 'career',
 	aliases: ['c', 'car', 'carer'],

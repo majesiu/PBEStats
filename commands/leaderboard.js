@@ -26,7 +26,6 @@ const $ = require('cheerio');
 const { table, getBorderCharacters } = require('table');
 const { domainUrl } = require('../environment.json');
 
-
 module.exports = {
 	name: 'leaderboard',
 	description: 'Replies embed with Current PBE or MiLPBE leaderboard\nE.g. Type `!lead Batting AVG` to see current PBE standings, `!lead Batting AVG m` for minors',

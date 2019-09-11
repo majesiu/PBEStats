@@ -2,17 +2,17 @@
 * MIT License
 *
 * Copyright (c) 2019 Paweł Majewski
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all
 * copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,7 +23,9 @@
 */
 const tabletojson = require('tabletojson');
 const { table, getBorderCharacters } = require('table');
-const { majorsStandingsLink, minorsStandingsLink } = require('../config.json');
+const { domainUrl } = require('../environment.json');
+
+
 const emotes = {
 	'New York Voyagers':'NYV',
 	'Florida Space Rangers':'FSR',
@@ -61,7 +63,7 @@ const config = {
 // TODO: Colorize tables using discord https://www.reddit.com/r/discordapp/comments/8lev3t/discord_colored_text_with_code_markup_guide/
 function initializeStandings() {
 	tabletojson.convertUrl(
-		majorsStandingsLink,
+		`${domainUrl}/leagues/league_100_standings.html`,
 		function(tablesAsJson) {
 			const East = tablesAsJson[3];
 			const West = tablesAsJson[4];
@@ -79,7 +81,7 @@ function initializeStandings() {
 			standingsWestMajors = '```fix\n' + table(westTable, config) + '```';
 		});
 	tabletojson.convertUrl(
-		minorsStandingsLink,
+		`${domainUrl}/leagues/league_101_standings.html`,
 		function(tablesAsJson) {
 			const East = tablesAsJson[3];
 			const West = tablesAsJson[4];
