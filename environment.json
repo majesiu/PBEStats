@@ -18,5 +18,23 @@
         "kingston mounties": "0x460505",
         "dallas dynamos": "0x17ece5",
         "kansas city hepcats": "0xc9e5ff"
+    },
+    "idsToTeamNames" : {
+        "1": "new york voyagers",
+        "24": "florida space rangers",
+        "2": "outer banks aviators",
+        "26": "cancun toros",
+        "3": "providence crabs",
+        "10": "death valley scorpions",
+        "11": "vancouver vandals",
+        "9": "san antonio sloths",
+        "25": "utah railroaders",
+        "27": "nashville stars",
+        "16": "anchorage wheelers",
+        "19": "amarillo armadillos",
+        "18": "state college swift steeds ",
+        "17": "kingston mounties",
+        "29": "dallas dynamos",
+        "28": "kansas city hepcats"
     }
 }

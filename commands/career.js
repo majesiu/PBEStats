@@ -26,26 +26,8 @@ const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
-const { domainUrl, teamColors } = require('../environment.json');
+const { domainUrl, teamColors, idsToTeamNames } = require('../environment.json');
 
-const idsToTeamNames = {
-	1: 'new york voyagers',
-	24: 'florida space rangers',
-	2: 'outer banks aviators',
-	26: 'cancun toros',
-	3: 'providence crabs',
-	10: 'death valley scorpions',
-	11: 'vancouver vandals',
-	9: 'san antonio sloths',
-	25: 'utah railroaders',
-	27: 'nashville stars',
-	16: 'anchorage wheelers',
-	19: 'amarillo armadillos',
-	18: 'state college swift steeds ',
-	17: 'kingston mounties',
-	29: 'dallas dynamos',
-	28: 'kansas city hepcats',
-};
 
 module.exports = {
 	name: 'career',
@@ -90,8 +72,8 @@ module.exports = {
 						const selector = $(`a[href*="team"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).last().attr('href');
 						if (selector) {
 							const seasonTeamId = selector.match(/_\d{1,2}_/g)[0].replace(/_/g, '');
-							color = parseInt(teamColors[idsToTeamNames[seasonTeamId].trim()]);
-							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
+							color = parseInt(teamColors[idsToTeamNames[seasonTeamId.toString()].trim()]);
+							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId.toString()].split(' ').join('_')}.png`;
 						}
 					}
 					return message.channel.send({ embed: {
