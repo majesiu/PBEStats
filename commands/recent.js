@@ -27,6 +27,7 @@ const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const { table, getBorderCharacters } = require('table');
+const { domainUrl } = require('../environment.json');
 
 const teamColors = {
 	'New York Voyagers': 0xbabf88,
@@ -65,7 +66,7 @@ module.exports = {
 		}
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
-			http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
@@ -79,7 +80,7 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						title: title,
-						url: `http://www.pbesim.com/players/player_${id}.html`,
+						url: `${domainUrl}/players/player_${id}.html`,
 						fields: [
 							{
 								name: '10 Recent Games played in the season, go to the player page to find the boxscores',

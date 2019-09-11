@@ -26,26 +26,7 @@ const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
-
-const teamColors = {
-	'new york voyagers': 0xbabf88,
-	'florida space rangers': 0x000001,
-	'outer banks aviators': 0xce5428,
-	'cancun toros': 0xec60b0,
-	'providence crabs': 0x0067b5,
-	'death valley scorpions': 0x9f1c33,
-	'vancouver vandals': 0x228b22,
-	'san antonio sloths': 0xc6b3a2,
-	'utah railroaders': 0xa854c9,
-	'nashville stars': 0x83c1ec,
-	'anchorage wheelers': 0xa0fbff,
-	'amarillo armadillos': 0xffdb00,
-	'state college swift steeds': 0x519fd8,
-	'state college swift steeds ': 0x519fd8,
-	'kingston mounties': 0x460505,
-	'dallas dynamos': 0x17ece5,
-	'kansas city hepcats': 0xc9e5ff,
-};
+const { domainUrl, teamColors } = require('../environment.json');
 
 const idsToTeamNames = {
 	1: 'new york voyagers',
@@ -93,7 +74,7 @@ module.exports = {
 		}
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
-			http.get(`http://www.pbesim.com/players/player_${id}.html`, (resp) => {
+			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
@@ -103,14 +84,14 @@ module.exports = {
 					title += seasonYear ? ` in ${seasonYear} (${season.toUpperCase()})` : ' Career Totals';
 					title += minorsMode ? ' MiLPBE' : ' PBE';
 					title += postseasonMode ? ' Postseason' : ' Regular Season';
-					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com') : 'http://www.pbesim.com/images/league_logos/pro_baseball_experience.png';
+					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}') : '${domainUrl}/images/league_logos/pro_baseball_experience.png';
 					let color = teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()];
 					if(seasonYear) {
 						const selector = $(`a[href*="team"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).last().attr('href');
 						if (selector) {
 							const seasonTeamId = selector.match(/_\d{1,2}_/g)[0].replace(/_/g, '');
 							color = teamColors[idsToTeamNames[seasonTeamId].trim()];
-							thumbnail = `http://www.pbesim.com/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
+							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
 						}
 					}
 					return message.channel.send({ embed: {
@@ -120,13 +101,13 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						image: {
-							url: $('img[src*="player"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
+							url: $('img[src*="player"]', data).attr('src').replace('..', '${domainUrl}'),
 						},
 						thumbnail: {
 							url: thumbnail,
 						},
 						title: title,
-						url: `http://www.pbesim.com/players/player_${id}.html`,
+						url: `${domainUrl}/players/player_${id}.html`,
 						fields: [
 							{
 								name: title.startsWith('P') ? 'Pitching Stats' : 'Batting Stats',

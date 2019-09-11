@@ -38,7 +38,7 @@ module.exports = {
 		if (minorsMode) args.pop();
 		const stat = args.join(' ');
 		if(stat) {
-			http.get(minorsMode ? 'http://www.pbesim.com/leagues/league_101_stats.html' : 'http://www.pbesim.com/leagues/league_100_stats.html', (resp) => {
+			http.get(minorsMode ? '${domainUrl}/leagues/league_101_stats.html' : '${domainUrl}/leagues/league_100_stats.html', (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
@@ -52,7 +52,7 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						title: minorsMode ? 'MiLPBE Leaders' : 'PBE Leaders',
-						url: minorsMode ? 'http://www.pbesim.com/leagues/league_101_stats.html' : 'http://www.pbesim.com/leagues/league_100_stats.html',
+						url: minorsMode ? '${domainUrl}/leagues/league_101_stats.html' : '${domainUrl}/leagues/league_100_stats.html',
 						fields: [{
 							name: `${stat.toUpperCase()} Top 5 Leaderboard. Add m at the end for minors, add p for pitchers in case of doubled stats e.g. \`!lead WAR m p\``,
 							value:  getStatsInfo(data, stat, pitchersMode),

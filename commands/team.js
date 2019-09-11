@@ -24,6 +24,7 @@
 const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
+const { domainUrl } = require('../environment.json');
 
 const teamColors = {
 	'new york voyagers': 0xbabf88,
@@ -136,7 +137,7 @@ module.exports = {
 		}
 		const id = teamIds[teamName.toLowerCase().trim()];
 		if(id) {
-			http.get(`http://www.pbesim.com/teams/team_${id}.html`, (resp) => {
+			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
@@ -150,10 +151,10 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						thumbnail: {
-							url: $('img[src*="team_logos"]', data).attr('src').replace('..', 'http://www.pbesim.com'),
+							url: $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}'),
 						},
 						title: title,
-						url: `http://www.pbesim.com/players/player_${id}.html`,
+						url: `${domainUrl}/players/player_${id}.html`,
 						fields: [
 							{
 								name: 'Basic Stats',

@@ -36,7 +36,7 @@ module.exports = {
 				icon_url: client.user.avatarURL,
 			},
 			title: args[0] != null && args[0] === 'm' ? 'MiLPBE Current Standings' : 'PBE Current Standings',
-			url: args[0] != null && args[0] === 'm' ? 'http://www.pbesim.com/leagues/league_101_standings.html' : 'http://www.pbesim.com/leagues/league_100_standings.html',
+			url: args[0] != null && args[0] === 'm' ? '${domainUrl}/leagues/league_101_standings.html' : '${domainUrl}/leagues/league_100_standings.html',
 			fields: [{
 				name: 'West Standings',
 				value:  args[0] != null && args[0] === 'm' ? standings.getStandingsWestMinors() : standings.getStandingsWestMajors(),
