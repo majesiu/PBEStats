@@ -24,7 +24,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 
-const { prefix, token } = require('./config.json');
+const { token } = require('./config.json');
+const { prefix } = require('./environment.json');
 const standings = require('./modules/standingsUtil.js');
 const scrapPlayers = require('./modules/scrapPlayers.js');
 const playerPersistence = require('./modules/playerPersistence');
