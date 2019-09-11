@@ -85,12 +85,12 @@ module.exports = {
 					title += minorsMode ? ' MiLPBE' : ' PBE';
 					title += postseasonMode ? ' Postseason' : ' Regular Season';
 					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`;
-					let color = teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()];
+					let color = parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]);
 					if(seasonYear) {
 						const selector = $(`a[href*="team"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).last().attr('href');
 						if (selector) {
 							const seasonTeamId = selector.match(/_\d{1,2}_/g)[0].replace(/_/g, '');
-							color = teamColors[idsToTeamNames[seasonTeamId].trim()];
+							color = parseInt(teamColors[idsToTeamNames[seasonTeamId].trim()]);
 							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId].split(' ').join('_')}.png`;
 						}
 					}

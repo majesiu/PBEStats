@@ -27,26 +27,7 @@ const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const { table, getBorderCharacters } = require('table');
-const { domainUrl } = require('../environment.json');
-
-const teamColors = {
-	'New York Voyagers': 0xbabf88,
-	'Florida Space Rangers': 0x000001,
-	'Outer Banks Aviators': 0xce5428,
-	'Cancun Toros': 0xec60b0,
-	'Providence Crabs': 0x0067b5,
-	'Death Valley Scorpions': 0x9f1c33,
-	'Vancouver Vandals': 0x228b22,
-	'San Antonio Sloths': 0xc6b3a2,
-	'Utah Railroaders': 0xa854c9,
-	'Nashville Stars': 0x83c1ec,
-	'Anchorage Wheelers': 0xa0fbff,
-	'Amarillo Armadillos': 0xffdb00,
-	'State College Swift Steeds': 0x519fd8,
-	'Kingston Mounties': 0x460505,
-	'Dallas Dynamos': 0x17ece5,
-	'Kansas City Hepcats': 0xc9e5ff,
-};
+const { domainUrl, teamColors } = require('../environment.json');
 
 module.exports = {
 	name: 'recent',
@@ -74,7 +55,7 @@ module.exports = {
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
 					return message.channel.send({ embed: {
-						color: teamColors[$('a[href*="team"]', data).eq(0).text()],
+						color: parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]),
 						author: {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,

@@ -24,26 +24,7 @@
 const http = require('http');
 const $ = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
-const { domainUrl } = require('../environment.json');
-
-const teamColors = {
-	'new york voyagers': 0xbabf88,
-	'florida space rangers': 0x000001,
-	'outer banks aviators': 0xce5428,
-	'cancun toros': 0xec60b0,
-	'providence crabs': 0x0067b5,
-	'death valley scorpions': 0x9f1c33,
-	'vancouver vandals': 0x228b22,
-	'san antonio sloths': 0xc6b3a2,
-	'utah railroaders': 0xa854c9,
-	'nashville stars': 0x83c1ec,
-	'anchorage wheelers': 0xa0fbff,
-	'amarillo armadillos': 0xffdb00,
-	'state college swift steeds': 0x519fd8,
-	'kingston mounties': 0x460505,
-	'dallas dynamos': 0x17ece5,
-	'kansas city hepcats': 0xc9e5ff,
-};
+const { domainUrl, teamColors } = require('../environment.json');
 
 const teamIds = {
 	'new york voyagers': 1,
@@ -145,7 +126,7 @@ module.exports = {
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
 					return message.channel.send({ embed: {
-						color: teamColors[title.replace('(R)', '').toLowerCase().trim()],
+						color: parseInt(teamColors[title.replace('(R)', '').toLowerCase().trim()]),
 						author: {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,
