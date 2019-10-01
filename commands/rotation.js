@@ -110,16 +110,14 @@ function pitchingData(data) {
 	let row = '\n';
 	let output = '';
 	$('td:contains(PITCHING STAFF)', data).last().children().children().children().children().each(function(index, element) {
-		if(index != 0) {
-			if((index % 11 != 0)) {
-				row += $(element).text().replace('Relief', '').trim();
-				if((index + 1) % 11 != 0) {
-					row += ' | ';
-				}
-				else {
-					output += row;
-					row = '\n';
-				}
+		if(index !== 0 && index % 11 !== 0) {
+			row += $(element).text().replace('Relief', '').trim();
+			if((index + 1) % 11 !== 0) {
+				row += ' | ';
+			}
+			else {
+				output += row;
+				row = '\n';
 			}
 		}
 	});

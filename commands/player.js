@@ -41,6 +41,7 @@ module.exports = {
 		if (postseasonMode) return career.execute(message, args, client);
 		const minorsMode = args[args.length - 1] === 'm';
 		if (minorsMode) return career.execute(message, args, client);
+
 		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
 		const seasonYear = seasonRegexp.test(args[args.length - 1]) ? parseInt(args[args.length - 1].match('\\d+')) + 2016 : false;
 		if (seasonYear) return career.execute(message, args, client);
@@ -104,7 +105,7 @@ module.exports = {
 					caseSensitive: false,
 				});
 				const result = searcher.search(name.toLowerCase().trim());
-				if(result.length != 0) {
+				if (result.length != 0) {
 					let suggestions = '';
 					result.splice(0, 10).forEach(function(res) {
 						suggestions += `\n - ${res.fullName}`;

@@ -32,13 +32,13 @@ module.exports = {
 	cooldown: 5,
 	aliases: ['leaderboard', 'lead', 'top'],
 	execute(message, args, client) {
-		const pitchersMode = args[args.length - 1] === 'p' ? true : false;
+		const pitchersMode = args[args.length - 1] === 'p';
 		if (pitchersMode) args.pop();
-		const minorsMode = args[args.length - 1] === 'm' ? true : false;
+		const minorsMode = args[args.length - 1] === 'm';
 		if (minorsMode) args.pop();
 		const stat = args.join(' ');
 		if(stat) {
-			http.get(minorsMode ? '${domainUrl}/leagues/league_101_stats.html' : `${domainUrl}/leagues/league_100_stats.html`, (resp) => {
+			http.get(`${domainUrl}/leagues/league_${minorsMode ? 101 : 100}_stats.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
@@ -51,8 +51,8 @@ module.exports = {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,
 						},
-						title: minorsMode ? 'MiLPBE Leaders' : 'PBE Leaders',
-						url: minorsMode ? `${domainUrl}/leagues/league_101_stats.html` : `${domainUrl}/leagues/league_100_stats.html`,
+						title: (minorsMode ? 'MiLPBE' : 'PBE') + ' Leaders',
+						url: `${domainUrl}/leagues/league_${minorsMode ? 101 : 100}_stats.html`,
 						fields: [{
 							name: `${stat.toUpperCase()} Top 5 Leaderboard. Add m at the end for minors, add p for pitchers in case of doubled stats e.g. \`!lead WAR m p\``,
 							value:  getStatsInfo(data, stat, pitchersMode),

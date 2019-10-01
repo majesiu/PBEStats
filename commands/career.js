@@ -34,9 +34,9 @@ module.exports = {
 	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
-		const postseasonMode = args[args.length - 1] === 'p' ? true : false;
+		const postseasonMode = args[args.length - 1] === 'p';
 		if (postseasonMode) args.pop();
-		const minorsMode = args[args.length - 1] === 'm' ? true : false;
+		const minorsMode = args[args.length - 1] === 'm';
 		if (minorsMode) args.pop();
 		const leagueStartYear = 2016;
 		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
