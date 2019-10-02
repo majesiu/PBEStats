@@ -109,7 +109,7 @@ function basicStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(5) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
-			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
+			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
 	});
 	return output;
@@ -120,7 +120,7 @@ function battingStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(6) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
-			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
+			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
 	});
 	return output;
@@ -131,7 +131,7 @@ function pitchingStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(7) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
-			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
+			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
 	});
 	return output;
