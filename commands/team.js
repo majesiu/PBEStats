@@ -72,7 +72,7 @@ module.exports = {
 							url: $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}'),
 						},
 						title: title,
-						url: `${domainUrl}/players/player_${id}.html`,
+						url: `${domainUrl}/teams/team_${id}.html`,
 						fields: [
 							{
 								name: 'Basic Stats',
