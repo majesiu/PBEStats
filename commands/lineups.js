@@ -34,10 +34,14 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
+
+		// get team name if entered by alias
 		if(teamName.trim().toLowerCase() in teamAliases) {
 			teamName = teamAliases[teamName.trim().toLowerCase()];
 		}
-		if(teamName === '') {
+
+		// if team is queried as an empty string find bound team or refer user to !bind command
+		if(!teamName) {
 			const teamname = await playerPersistence.userTeams.findOne({ where: { username: message.author.id } });
 			if(teamname) {
 				teamName = teamname.get('teamname');
@@ -46,6 +50,8 @@ module.exports = {
 				return message.channel.send('Use !bind Team Name to bind team to the !t command');
 			}
 		}
+
+		// gather team data by team id
 		const id = teamIds[teamName.toLowerCase().trim()];
 		if(id) {
 			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
@@ -53,8 +59,11 @@ module.exports = {
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+
+				// handle team data
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
+
 					return message.channel.send({ embed: {
 						color: parseInt(teamColors[title.replace('(R)', '').toLowerCase().trim()]),
 						author: {
@@ -65,7 +74,7 @@ module.exports = {
 							url: $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						title: title,
-						url: `${domainUrl}/players/player_${id}.html`,
+						url: `${domainUrl}/teams/team_${id}.html`,
 						fields: [
 							{
 								name: 'vs LHP',
@@ -87,8 +96,7 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
+		} else {
 			return message.channel.send(`Team ${teamName} not found`);
 		}
 	},
@@ -110,6 +118,7 @@ const tableLineupConfig = {
 	},
 };
 
+// parse site data to get lineup
 function battingLineup(data, versus) {
 	let row = '';
 	const dataTable = [];
@@ -118,8 +127,7 @@ function battingLineup(data, versus) {
 			row += $(element).text();
 			if(index % 8 != 0) {
 				row += ' | ';
-			}
-			else {
+			} else {
 				dataTable.push(row.split(' | '));
 				row = '';
 			}
