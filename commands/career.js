@@ -34,8 +34,7 @@ module.exports = {
 	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
-		// determine career mode (could be problematic if user's first name is p or m)
-		// consider changing them to `-p` and `-m`
+		// determine mode(s)
 		const postseasonMode = args[args.length - 1] === 'p';
 		if (postseasonMode) args.pop();
 		const minorsMode = args[args.length - 1] === 'm';
@@ -48,6 +47,7 @@ module.exports = {
 		let season = '';
 		if (seasonYear) season = args.pop();
 
+		// parse name input
 		let name = args.join(' ');
 		if(!name) {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
@@ -59,6 +59,7 @@ module.exports = {
 			}
 		}
 
+		// search for the player and retrieve his/her career stats
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
 			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {
@@ -66,11 +67,15 @@ module.exports = {
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+				// handle player data
 				resp.on('end', () => {
+					// create title
 					let title = $('.reptitle ', data).text();
 					title += seasonYear ? ` in ${seasonYear} (${season.toUpperCase()})` : ' Career Totals';
 					title += minorsMode ? ' MiLPBE' : ' PBE';
 					title += postseasonMode ? ' Postseason' : ' Regular Season';
+
+					// decide styling
 					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`;
 					let color = parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]);
 					if(seasonYear) {
@@ -81,6 +86,8 @@ module.exports = {
 							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId.toString()].split(' ').join('_')}.png`;
 						}
 					}
+
+					// return embed format
 					return message.channel.send({ embed: {
 						color: color,
 						author: {
@@ -116,8 +123,8 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
+		} else {
+			// give name suggestions if it couldn't be found
 			if(name.toLowerCase().trim() != '') {
 				const searcher = new FuzzySearch(scrapPlayers.getPlayersNames(), ['fullName'], {
 					caseSensitive: false,
@@ -138,6 +145,9 @@ module.exports = {
 		}
 	},
 };
+
+
+/* Functions to gather data from site */
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
