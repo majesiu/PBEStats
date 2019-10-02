@@ -49,7 +49,6 @@ module.exports = {
 			}
 		}
 
-
 		const id = teamIds[teamName.toLowerCase().trim()];
 		if (id) {
 			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
@@ -69,7 +68,7 @@ module.exports = {
 							icon_url: client.user.avatarURL,
 						},
 						thumbnail: {
-							url: $('img[src*="team_logos"]', data).attr('src').replace('..', '${domainUrl}'),
+							url: $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						title: title,
 						url: `${domainUrl}/teams/team_${id}.html`,
