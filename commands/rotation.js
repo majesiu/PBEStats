@@ -87,7 +87,7 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}velse {
+		} else {
 			return message.channel.send(`Team ${teamName} not found`);
 		}
 	},
@@ -120,8 +120,7 @@ function pitchingData(data) {
 			row += $(element).text().replace('Relief', '').trim();
 			if((index + 1) % 11 !== 0) {
 				row += ' | ';
-			}
-			else {
+			} else {
 				output += row;
 				row = '\n';
 			}
