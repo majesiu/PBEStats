@@ -34,25 +34,31 @@ module.exports = {
 	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
+		// determine career mode (could be problematic if user's first name is p or m)
+		// consider changing them to `-p` and `-m`
 		const postseasonMode = args[args.length - 1] === 'p';
 		if (postseasonMode) args.pop();
 		const minorsMode = args[args.length - 1] === 'm';
 		if (minorsMode) args.pop();
+
+		// if user specifies season
 		const leagueStartYear = 2016;
 		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
 		const seasonYear = seasonRegexp.test(args[args.length - 1]) ? parseInt(args[args.length - 1].match('\\d+')) + leagueStartYear : false;
 		let season = '';
 		if (seasonYear) season = args.pop();
+
 		let name = args.join(' ');
-		if(name === '') {
+		if(!name) {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
 			if(playername) {
 				name = playername.get('playername');
 			}
 			else {
-				return message.channel.send('Use `!save Player Name` to bind player to the !p !c command');
+				return message.channel.send('Use `!save Player Name` to bind player to the !p or !c commands	');
 			}
 		}
+
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
 			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {

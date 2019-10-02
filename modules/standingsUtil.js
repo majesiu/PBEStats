@@ -83,8 +83,8 @@ function initializeStandings() {
 	tabletojson.convertUrl(
 		`${domainUrl}/leagues/league_101_standings.html`,
 		function(tablesAsJson) {
-			const East = tablesAsJson[3];
-			const West = tablesAsJson[4];
+			const East = tablesAsJson[4];
+			const West = tablesAsJson[3];
 			const eastTable = [];
 			const westTable = [];
 			eastTable.push(['Team', 'W', 'L', 'PCT', 'Home', 'Away', 'Strk', 'Last10']);
