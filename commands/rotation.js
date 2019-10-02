@@ -33,27 +33,34 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
-		if(teamName.trim().toLowerCase() in teamAliases) {
+
+		// if user entered alias get team name
+		if (teamName.trim().toLowerCase() in teamAliases) {
 			teamName = teamAliases[teamName.trim().toLowerCase()];
 		}
-		if(teamName === '') {
+
+		// if team is queried as an empty string find bound team or refer user to !bind command
+		if (teamName === '') {
 			const teamname = await playerPersistence.userTeams.findOne({ where: { username: message.author.id } });
-			if(teamname) {
+			if (teamname) {
 				teamName = teamname.get('teamname');
-			}
-			else {
+			}	else {
 				return message.channel.send('Use `!bind Team Name` to bind team to the !t !r !l commands');
 			}
 		}
+
 		const id = teamIds[teamName.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+
+				// handle team data
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
+
 					return message.channel.send({ embed: {
 						color: parseInt(teamColors[title.replace('(R)', '').toLowerCase().trim()]),
 						author: {
@@ -64,7 +71,7 @@ module.exports = {
 							url: $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`),
 						},
 						title: title,
-						url: `${domainUrl}/players/player_${id}.html`,
+						url: `${domainUrl}/teams/team_${id}.html`,
 						fields: [
 							{
 								name: 'Pitching Staff',
@@ -80,8 +87,7 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
+		}velse {
 			return message.channel.send(`Team ${teamName} not found`);
 		}
 	},
@@ -110,16 +116,14 @@ function pitchingData(data) {
 	let row = '\n';
 	let output = '';
 	$('td:contains(PITCHING STAFF)', data).last().children().children().children().children().each(function(index, element) {
-		if(index != 0) {
-			if((index % 11 != 0)) {
-				row += $(element).text().replace('Relief', '').trim();
-				if((index + 1) % 11 != 0) {
-					row += ' | ';
-				}
-				else {
-					output += row;
-					row = '\n';
-				}
+		if(index !== 0 && index % 11 !== 0) {
+			row += $(element).text().replace('Relief', '').trim();
+			if((index + 1) % 11 !== 0) {
+				row += ' | ';
+			}
+			else {
+				output += row;
+				row = '\n';
 			}
 		}
 	});

@@ -34,37 +34,47 @@ module.exports = {
 	description: 'Returns player info embed\nE.g. Type `!career Ed Barker` to see information about that players career\nParameters: add m for minors, add p for playoffs E.g. type `!c m p` for your players MiLPBE Playoffs Career Total',
 	cooldown: 5,
 	async execute(message, args, client) {
-		const postseasonMode = args[args.length - 1] === 'p' ? true : false;
+		// determine mode(s)
+		const postseasonMode = args[args.length - 1] === 'p';
 		if (postseasonMode) args.pop();
-		const minorsMode = args[args.length - 1] === 'm' ? true : false;
+		const minorsMode = args[args.length - 1] === 'm';
 		if (minorsMode) args.pop();
+
+		// if user specifies season
 		const leagueStartYear = 2016;
 		const seasonRegexp = new RegExp(/S\d{1,3}/gi);
 		const seasonYear = seasonRegexp.test(args[args.length - 1]) ? parseInt(args[args.length - 1].match('\\d+')) + leagueStartYear : false;
 		let season = '';
 		if (seasonYear) season = args.pop();
+
+		// parse name input
 		let name = args.join(' ');
-		if(name === '') {
+		if (!name) {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
 			if(playername) {
 				name = playername.get('playername');
-			}
-			else {
-				return message.channel.send('Use `!save Player Name` to bind player to the !p !c command');
+			} else {
+				return message.channel.send('Use `!save Player Name` to bind player to the !p or !c commands	');
 			}
 		}
+
+		// search for the player and retrieve his/her career stats
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+				// handle player data
 				resp.on('end', () => {
+					// create title
 					let title = $('.reptitle ', data).text();
 					title += seasonYear ? ` in ${seasonYear} (${season.toUpperCase()})` : ' Career Totals';
 					title += minorsMode ? ' MiLPBE' : ' PBE';
 					title += postseasonMode ? ' Postseason' : ' Regular Season';
+
+					// decide styling
 					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`;
 					let color = parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]);
 					if(seasonYear) {
@@ -75,6 +85,8 @@ module.exports = {
 							thumbnail = `${domainUrl}/images/team_logos/${idsToTeamNames[seasonTeamId.toString()].split(' ').join('_')}.png`;
 						}
 					}
+
+					// return embed format
 					return message.channel.send({ embed: {
 						color: color,
 						author: {
@@ -110,14 +122,14 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
+		} else {
+			// give name suggestions if it couldn't be found
 			if(name.toLowerCase().trim() != '') {
 				const searcher = new FuzzySearch(scrapPlayers.getPlayersNames(), ['fullName'], {
 					caseSensitive: false,
 				});
 				const result = searcher.search(name.toLowerCase().trim());
-				if(result.length != 0) {
+				if (result.length != 0) {
 					let suggestions = '';
 					result.splice(0, 10).forEach(function(res) {
 						suggestions += `\n - ${res.fullName}`;
@@ -133,32 +145,33 @@ module.exports = {
 	},
 };
 
+
+/* Functions to gather data from site */
+
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	if (seasonYear) {
 		if (postseasonMode) {
-			if((minorsMode || set.length > 1) && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
+			if ((minorsMode || set.length > 1) && set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
 				set = set.last();
 			}
 			else {
 				return 'Player didn\'t participate in postseason that year';
 			}
 		}
-		else if(set.length > 1) {
-			if(set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
+		else if (set.length > 1) {
+			if (set.last().children().eq(20).text() == '0' && set.last().children().eq(22).text() == '0.0') {
 				set = set.eq(-2);
-			}
-			else {
+			} else {
 				set = set.eq(-1);
 			}
-		}
-		else {
+		} else {
 			set = set.eq(0);
 		}
 	}
 	set = set.children();
-	if(set.eq(2).text() === '') {
+	if (!set.eq(2).text()) {
 		return `Player haven't played any games ${seasonYear ? 'that season' : `in his ${postseasonMode ? 'postseason ' : ''} ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	basicInfo += '\nGames: ' + set.eq(2).text();
@@ -177,7 +190,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	basicInfo += '\nOn-Base Pct: ' + set.eq(17).text();
 	basicInfo += '\nSlugging Pct: ' + set.eq(18).text();
 	basicInfo += '\nOPS: ' + set.eq(19).text();
-	if(!postseasonMode) {
+	if (!postseasonMode) {
 		basicInfo += '\nOPS+: ' + set.eq(20).text();
 		basicInfo += '\nwRC+: ' + set.eq(21).text();
 		basicInfo += '\nWAR: ' + set.eq(22).text();
@@ -190,27 +203,23 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	if (seasonYear) {
 		if (postseasonMode) {
-			if((minorsMode || set.length > 1) && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
+			if ((minorsMode || set.length > 1) && set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
 				set = set.last();
-			}
-			else {
+			} else {
 				return 'Player didn\'t participate in postseason that year';
 			}
-		}
-		else if(set.length > 1) {
-			if(set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
+		} else if (set.length > 1) {
+			if (set.last().children().eq(21).text() == '0' && set.last().children().eq(20).text() == '0.0') {
 				set = set.eq(-2);
-			}
-			else {
+			} else {
 				set = set.eq(-1);
 			}
-		}
-		else {
+		} else {
 			set = set.eq(0);
 		}
 	}
 	set = set.children();
-	if(set.eq(2).text() === '') {
+	if (set.eq(2).text() === '') {
 		return `Player haven't played any games ${seasonYear ? 'that season' : `in his ${postseasonMode ? 'postseason ' : ''} ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	basicInfo += '\nGames/Started: ' + set.eq(2).text() + '/' + set.eq(3).text();
@@ -228,7 +237,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	basicInfo += '\nShutouts: ' + set.eq(16).text();
 	basicInfo += '\nWHIP: ' + set.eq(17).text();
 	basicInfo += '\nBABIP: ' + set.eq(18).text();
-	if(!postseasonMode) {
+	if (!postseasonMode) {
 		basicInfo += '\nFIP: ' + set.eq(19).text();
 		basicInfo += '\nWAR: ' + set.eq(20).text();
 		basicInfo += '\nERA+: ' + set.eq(21).text();
@@ -243,10 +252,10 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 		return `Player haven't played any games in the field ${seasonYear ? 'that season' : `in his ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;
 	}
 	const gameRequired = seasonYear ? 10 : 50;
-	if(seasonYear) {
+	if (seasonYear) {
 		for (let i = 0; i < set.length; i++) {
 			const row = set.eq(i).children();
-			if(parseInt(row.eq(2).text()) > gameRequired && ['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+			if (parseInt(row.eq(2).text()) > gameRequired && ['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
 				basicInfo += '\nPosition: **' + row.eq(1).text();
 				basicInfo += '**\nGames: ' + row.eq(2).text();
 				basicInfo += '\nPutouts: ' + row.eq(4).text();
@@ -257,19 +266,17 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 				basicInfo += '\nEfficiency: ' + row.eq(13).text();
 			}
 		}
-	}
-	else {
+	} else {
 		const positionBuckets = [];
 		for (let i = 0; i < set.length; i++) {
 			const row = set.eq(i).children();
-			if(['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
+			if (['P', '1B', 'SS', '2B', '3B', 'C', 'LF', 'CF', 'RF'].includes(row.eq(1).text())) {
 				let position = new Object();
 				position.name = row.eq(1).text();
 				const previous = positionBuckets.find(x => x.name === position.name);
-				if(previous) {
+				if (previous) {
 					position = previous;
-				}
-				else {
+				} else {
 					position.games = 0;
 					position.putouts = 0;
 					position.assists = 0;
@@ -287,11 +294,11 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 				position.rangeFactor += parseFloat(row.eq(11).text()) * parseFloat(row.eq(10).text());
 				position.zoneRating += parseFloat(row.eq(12).text());
 				position.efficiency += parseFloat(row.eq(13).text()) * parseFloat(row.eq(10).text());
-				if(!previous) positionBuckets.push(position);
+				if (!previous) positionBuckets.push(position);
 			}
 		}
 		for(const position of positionBuckets) {
-			if(position.games > gameRequired) {
+			if (position.games > gameRequired) {
 				basicInfo += '\nPosition: **' + position.name;
 				basicInfo += '**\nGames: ' + position.games;
 				basicInfo += '\nPutouts: ' + position.putouts;
@@ -303,7 +310,7 @@ function parseFieldingCareer(data, seasonYear, minorsMode) {
 			}
 		}
 	}
-	if(basicInfo === '') {
+	if (basicInfo === '') {
 		basicInfo += 'Player didn\'t player required amount of games in the field - 10 for a season, 50 for career';
 	}
 	return basicInfo;

@@ -37,7 +37,7 @@ module.exports = {
 				icon_url: client.user.avatarURL,
 			},
 			title: args[0] != null && args[0] === 'm' ? 'MiLPBE Current Standings' : 'PBE Current Standings',
-			url: args[0] != null && args[0] === 'm' ? `${domainUrl}/leagues/league_101_standings.html` : `${domainUrl}/leagues/league_100_standings.html`,
+			url: `${domainUrl}/leagues/league_${args[0] != null && args[0] === 'm' ? 101 : 100}_standings.html`,
 			fields: [{
 				name: 'West Standings',
 				value:  args[0] != null && args[0] === 'm' ? standings.getStandingsWestMinors() : standings.getStandingsWestMajors(),

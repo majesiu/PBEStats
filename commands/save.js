@@ -31,14 +31,13 @@ module.exports = {
 	execute(message, args) {
 		const name = args.join(' ');
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			playerPersistence.userPlayers.upsert({
 				username: message.author.id,
 				playername: name,
 			});
 			return message.channel.send(`Player ${name} is bound to you, use !p now!`);
-		}
-		else {
+		} else {
 			return message.channel.send(`Player ${name} not found type e.g. \`!save Paulo Di Stephano\` to bind player to yourself`);
 		}
 	},

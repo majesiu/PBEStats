@@ -36,7 +36,9 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let name = args.join(' ');
-		if(name === '') {
+
+		// handle stored player name or refer player to !save command if not found
+		if(!name) {
 			const playername = await playerPersistence.userPlayers.findOne({ where: { username: message.author.id } });
 			if(playername) {
 				name = playername.get('playername');
@@ -45,6 +47,7 @@ module.exports = {
 				return message.channel.send('Use !save Player Name to bind player to the !l10 command');
 			}
 		}
+
 		const id = scrapPlayers.getPlayers()[name.toLowerCase().trim()];
 		if(id) {
 			http.get(`${domainUrl}/players/player_${id}.html`, (resp) => {
@@ -52,8 +55,11 @@ module.exports = {
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+
+				// handle player data
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
+
 					return message.channel.send({ embed: {
 						color: parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]),
 						author: {
@@ -78,21 +84,19 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
-			if(name.toLowerCase().trim() != '') {
+		} else {
+			if (name.toLowerCase().trim() != '') {
 				const searcher = new FuzzySearch(scrapPlayers.getPlayersNames(), ['fullName'], {
 					caseSensitive: false,
 				});
 				const result = searcher.search(name.toLowerCase().trim());
-				if(result.length != 0) {
+				if (result.length != 0) {
 					let suggestions = '';
 					result.splice(0, 10).forEach(function(res) {
 						suggestions += `\n - ${res.fullName}`;
 					});
 					return message.channel.send(`\`\`\`Player ${name} not found, but did you look maybe for: ${suggestions}\`\`\``);
-				}
-				else {
+				} else {
 					return message.channel.send(`Player ${name} not found`);
 				}
 			}
@@ -101,6 +105,7 @@ module.exports = {
 	},
 };
 
+// result table styling
 const config = {
 	border: getBorderCharacters('void'),
 	columnDefault: {
@@ -118,6 +123,7 @@ const config = {
 	// },
 };
 
+// parse scraped data
 function last10(data) {
 	const set = $('a[href*="box_scores"]', data).parent().parent().parent().children();
 	const tableData = [];
@@ -125,15 +131,13 @@ function last10(data) {
 		const row = set.eq(i).children();
 		const tableRow = [];
 		for (let j = 0; j < row.length; j++) {
-			if(row.eq(j).text().trim() != 'Start') {
-				if(j === 0) {
+			if (row.eq(j).text().trim() != 'Start') {
+				if (j === 0) {
 					tableRow.push(row.eq(j).text().trim().slice(0, -5));
-				}
-				else {
+				} else {
 					tableRow.push(row.eq(j).text().trim());
 				}
-			}
-			else {
+			} else {
 				tableRow.push('S');
 			}
 		}
