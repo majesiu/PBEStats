@@ -36,24 +36,23 @@ module.exports = {
 		let teamName = args.join(' ');
 
 		// get team name if entered by alias
-		if(teamName.trim().toLowerCase() in teamAliases) {
+		if (teamName.trim().toLowerCase() in teamAliases) {
 			teamName = teamAliases[teamName.trim().toLowerCase()];
 		}
 
 		// if team is queried as an empty string find bound team or refer user to !bind command
-		if(!teamName) {
+		if (!teamName) {
 			const teamname = await playerPersistence.userTeams.findOne({ where: { username: message.author.id } });
-			if(teamname) {
+			if (teamname) {
 				teamName = teamname.get('teamname');
-			}
-			else {
+			} else {
 				return message.channel.send('Use !bind Team Name to bind team to the !t command');
 			}
 		}
 
 		// gather team data by team id
 		const id = teamIds[teamName.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
@@ -123,9 +122,9 @@ function battingLineup(data, versus) {
 	let row = '';
 	const dataTable = [];
 	$(`td:contains(LINEUP VS ${versus}+DH)`, data).last().children().children().children().children().each(function(index, element) {
-		if(index != 0) {
+		if (index != 0) {
 			row += $(element).text();
-			if(index % 8 != 0) {
+			if (index % 8 != 0) {
 				row += ' | ';
 			} else {
 				dataTable.push(row.split(' | '));

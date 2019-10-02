@@ -30,18 +30,17 @@ module.exports = {
 	cooldown: 5,
 	execute(message, args) {
 		let name = args.join(' ');
-		if(name.trim().toLowerCase() in teamAliases) {
+		if (name.trim().toLowerCase() in teamAliases) {
 			name = teamAliases[name.trim().toLowerCase()];
 		}
 		const id = teamIds[name.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			playerPersistence.userTeams.upsert({
 				username: message.author.id,
 				teamname: name,
 			});
 			return message.channel.send(`Team ${name} is bound to you, use !t !team, !l !lineup, !r !rotation without paramater now!`);
-		}
-		else {
+		} else {
 			return message.channel.send(`Team ${name} not found, type e.g. \`!bind Death Valley Scorpions\` to bind team to yourself`);
 		}
 	},

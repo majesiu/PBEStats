@@ -33,27 +33,35 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		let teamName = args.join(' ');
-		if(teamName.trim().toLowerCase() in teamAliases) {
+
+		// get team name if entered by alias
+		if (teamName.trim().toLowerCase() in teamAliases) {
 			teamName = teamAliases[teamName.trim().toLowerCase()];
 		}
-		if(teamName === '') {
+
+		// if team is queried as an empty string find bound team or refer user to !bind command
+		if (teamName === '') {
 			const teamname = await playerPersistence.userTeams.findOne({ where: { username: message.author.id } });
-			if(teamname) {
+			if (teamname) {
 				teamName = teamname.get('teamname');
-			}
-			else {
+			} else {
 				return message.channel.send('Use !bind Team Name to bind team to the !t command');
 			}
 		}
+
+
 		const id = teamIds[teamName.toLowerCase().trim()];
-		if(id) {
+		if (id) {
 			http.get(`${domainUrl}/teams/team_${id}.html`, (resp) => {
 				let data = '';
 				resp.on('data', (chunk) => {
 					data += chunk;
 				});
+
+				// handle team data
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
+
 					return message.channel.send({ embed: {
 						color: parseInt(teamColors[title.replace('(R)', '').toLowerCase().trim()]),
 						author: {
@@ -91,37 +99,39 @@ module.exports = {
 			}).on('error', (err) => {
 				console.log('Error: ' + err.message);
 			});
-		}
-		else {
+		} else {
 			return message.channel.send(`Team ${teamName} not found`);
 		}
 	},
 };
 
+// parse basic stats from page
 function basicStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(5) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
-		if(index != 0) {
+		if (index != 0) {
 			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
 		}
 	});
 	return output;
 }
 
+// parse batting stats from page
 function battingStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(6) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
-		if(index != 0) {
+		if (index != 0) {
 			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
 		}
 	});
 	return output;
 }
 
+// parse pitching stats from page
 function pitchingStats(data) {
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(7) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
-		if(index != 0) {
+		if (index != 0) {
 			output += $(element).text() + index % 2 !== 0 ? ': ' : '\n';
 		}
 	});
