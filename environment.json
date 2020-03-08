@@ -18,7 +18,9 @@
         "state college swift steeds ": "0x519fd8",
         "kingston mounties": "0x460505",
         "dallas dynamos": "0x17ece5",
-        "kansas city hepcats": "0xc9e5ff"
+        "kansas city hepcats": "0xc9e5ff",
+        "san bernardino 66ers": "0x4b474d",
+        "chicago kingpins": "0xa6160c" 
     },
     "idsToTeamNames" : {
         "1": "new york voyagers",
@@ -36,7 +38,10 @@
         "18": "state college swift steeds ",
         "17": "kingston mounties",
         "29": "dallas dynamos",
-        "28": "kansas city hepcats"
+        "28": "kansas city hepcats",
+        "30": "san bernardino 66ers",
+        "31": "chicago kingpins"
+
     },
     "teamIds" : {
         "new york voyagers": 1,
@@ -54,7 +59,9 @@
         "state college swift steeds": 18,
         "kingston mounties": 17,
         "dallas dynamos": 29,
-        "kansas city hepcats": 28
+        "kansas city hepcats": 28,
+        "san bernardino 66ers": 30,
+        "chicago kingpins": 31 
     },
     "teamAliases" : {
         "nyv" :"new york voyagers",
@@ -73,6 +80,8 @@
         "kin" :"kingston mounties",
         "dal" :"dallas dynamos",
         "kch" :"kansas city hepcats",
+        "sb": "san bernardino 66ers",
+        "chi": "chicago kingpins",
         "new york" :"new york voyagers",
         "florida" :"florida space rangers",
         "outer banks" :"outer banks aviators",
@@ -105,6 +114,10 @@
         "mounties" :"kingston mounties",
         "dynamos" :"dallas dynamos",
         "hepcats" :"kansas city hepcats",
-        "swifties" :"state college swift steeds"
+        "swifties" :"state college swift steeds",
+        "san bernardino ": "san bernardino 66ers",
+        "66ers": "san bernardino 66ers",
+        "chicago": "chicago kingpins",
+        "kingpins": "chicago kingpins"
     }
 }
