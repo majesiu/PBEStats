@@ -43,6 +43,8 @@ const emotes = {
 	'Kingston Mounties':'KIN',
 	'Dallas Dynamos':'DAL',
 	'Kansas City Hepcats':'KCH',
+	'Chicago Kingpins':'CHI',
+	'San Bernardino 66ers':'SB',
 };
 
 
