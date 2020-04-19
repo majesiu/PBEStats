@@ -20,7 +20,9 @@
         "dallas dynamos": "0x17ece5",
         "kansas city hepcats": "0xc9e5ff",
         "san bernardino 66ers": "0x4b474d",
-        "chicago kingpins": "0xa6160c" 
+        "chicago kingpins": "0xa6160c" ,
+        "new orleans rougarous": "0x671567",
+        "detroit demons" : "0xbd5b02"
     },
     "idsToTeamNames" : {
         "1": "new york voyagers",
@@ -40,7 +42,9 @@
         "29": "dallas dynamos",
         "28": "kansas city hepcats",
         "30": "san bernardino 66ers",
-        "31": "chicago kingpins"
+        "31": "chicago kingpins",
+        "32": "new orleans rougarous",
+        "33": "detroit demons"
 
     },
     "teamIds" : {
@@ -61,7 +65,9 @@
         "dallas dynamos": 29,
         "kansas city hepcats": 28,
         "san bernardino 66ers": 30,
-        "chicago kingpins": 31 
+        "chicago kingpins": 31,
+        "new orleans rougarous": 32,
+        "detroit demons" : 33
     },
     "teamAliases" : {
         "nyv" :"new york voyagers",
@@ -118,6 +124,13 @@
         "san bernardino ": "san bernardino 66ers",
         "66ers": "san bernardino 66ers",
         "chicago": "chicago kingpins",
-        "kingpins": "chicago kingpins"
+        "kingpins": "chicago kingpins",
+        "no": "new orleans rougarous",
+        "nola": "new orleans rougarous",
+        "det": "detroit demons",
+        "new orleans": "new orleans rougarous",
+        "detroit": "detroit demons",
+        "rougarous": "new orleans rougarous",
+        "demons": "detroit demons"
     }
 }
