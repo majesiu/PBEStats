@@ -35,7 +35,7 @@ const emotes = {
 	'Death Valley Scorpions':'DVS',
 	'Vancouver Vandals':'VAN',
 	'San Antonio Sloths':'SAS',
-	'Utah Railroaders':'UTA',
+	'Boise Raptors':'BOI',
 	'Nashville Stars':'NAS',
 	'Anchorage Wheelers':'ANC',
 	'Amarillo Armadillos':'AMA',
@@ -45,6 +45,8 @@ const emotes = {
 	'Kansas City Hepcats':'KCH',
 	'Chicago Kingpins':'CHI',
 	'San Bernardino 66ers':'SB',
+	'New Orleans Rougarous': 'NO',
+	'Detroit Demons': 'DET',
 };
 
 
