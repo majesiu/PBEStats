@@ -76,7 +76,7 @@ module.exports = {
 
 					// decide styling
 					let thumbnail = $('img[src*="team_logos"]', data).attr('src') ? $('img[src*="team_logos"]', data).attr('src').replace('..', `${domainUrl}`) : `${domainUrl}/images/league_logos/pro_baseball_experience.png`;
-					let color = parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]);
+					let color = parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase().trim()]);
 					if(seasonYear) {
 						const selector = $(`a[href*="team"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'PBE'})`, data).last().attr('href');
 						if (selector) {

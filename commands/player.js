@@ -71,9 +71,8 @@ module.exports = {
 				// handle player data
 				resp.on('end', () => {
 					const title = $('.reptitle ', data).text();
-
 					return message.channel.send({ embed: {
-						color: parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase()]),
+						color: parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase().trim()]),
 						author: {
 							name: client.user.username,
 							icon_url: client.user.avatarURL,
