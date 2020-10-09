@@ -28,7 +28,7 @@ const { domainUrl } = require('../environment.json');
 
 const emotes = {
 	'New York Voyagers':'NYV',
-	'Florida Space Rangers':'FSR',
+	'Sarasota Supernovas':'SAR',
 	'Outer Banks Aviators':'OBX',
 	'Cancun Toros':'CAN',
 	'Providence Crabs':'PRO',
@@ -47,6 +47,8 @@ const emotes = {
 	'San Bernardino 66ers':'SB',
 	'New Orleans Rougarous': 'NO',
 	'Detroit Demons': 'DET',
+	'Kashima Foxes': 'KAS',
+	'Indianapolis Apex': 'IND'
 };
 
 

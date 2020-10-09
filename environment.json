@@ -3,7 +3,7 @@
 	"prefix": "!",
     "teamColors" : {
         "new york voyagers": "0xbabf88",
-        "florida space rangers": "0x000001",
+        "sarasota supernovas": "0x262A33",
         "outer banks aviators": "0xce5428",
         "cancun toros": "0xec60b0",
         "providence crabs": "0x0067b5",
@@ -20,13 +20,15 @@
         "dallas dynamos": "0x17ece5",
         "kansas city hepcats": "0xc9e5ff",
         "san bernardino 66ers": "0x4b474d",
-        "chicago kingpins": "0xa6160c" ,
+        "chicago kingpins": "0xa6160c",
         "new orleans rougarous": "0x671567",
-        "detroit demons" : "0xbd5b02"
+        "detroit demons" : "0xbd5b02",
+        "indianapolis apex": "0x91080C",
+        "kashima foxes": "0x045C5C"
     },
     "idsToTeamNames" : {
         "1": "new york voyagers",
-        "24": "florida space rangers",
+        "24": "sarasota supernovas",
         "2": "outer banks aviators",
         "26": "cancun toros",
         "3": "providence crabs",
@@ -44,12 +46,14 @@
         "30": "san bernardino 66ers",
         "31": "chicago kingpins",
         "32": "new orleans rougarous",
-        "33": "detroit demons"
+        "33": "detroit demons",
+        "36": "indianapolis apex",
+        "37": "kashima foxes"
 
     },
     "teamIds" : {
         "new york voyagers": 1,
-        "florida space rangers": 24,
+        "sarasota supernovas": 24,
         "outer banks aviators": 2,
         "cancun toros": 26,
         "providence crabs": 3,
@@ -67,11 +71,13 @@
         "san bernardino 66ers": 30,
         "chicago kingpins": 31,
         "new orleans rougarous": 32,
-        "detroit demons" : 33
+        "detroit demons" : 33,
+        "indianapolis apex" : 36,
+        "kashima foxes" : 37
     },
     "teamAliases" : {
         "nyv" :"new york voyagers",
-        "fl" :"florida space rangers",
+        "fl" :"sarasota supernovas",
         "obx" :"outer banks aviators",
         "can" :"cancun toros",
         "pro" :"providence crabs",
@@ -88,8 +94,11 @@
         "kch" :"kansas city hepcats",
         "sb": "san bernardino 66ers",
         "chi": "chicago kingpins",
+        "kas": "kashima foxes",
+        "ind": "indianapolis apex",
+        "sar": "sarasota supernovas",
         "new york" :"new york voyagers",
-        "florida" :"florida space rangers",
+        "florida" :"sarasota supernovas",
         "outer banks" :"outer banks aviators",
         "cancun" :"cancun toros",
         "providence" :"providence crabs",
@@ -105,7 +114,7 @@
         "dallas" :"dallas dynamos",
         "kansas city" :"kansas city hepcats",
         "voyagers" :"new york voyagers",
-        "rangers" :"florida space rangers",
+        "rangers" :"sarasota supernovas",
         "aviators" :"outer banks aviators",
         "toros" :"cancun toros",
         "crabs" :"providence crabs",
@@ -131,6 +140,12 @@
         "new orleans": "new orleans rougarous",
         "detroit": "detroit demons",
         "rougarous": "new orleans rougarous",
-        "demons": "detroit demons"
+        "demons": "detroit demons",
+        "indianapolis": "indianapolis apex",
+        "apex": "indianapolis apex",
+        "kashima": "kashima foxes",
+        "foxes": "kashima foxes",
+        "sarasota": "sarasota supernovas",
+        "supernovas": "sarasota supernovas"
     }
 }
