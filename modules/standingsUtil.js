@@ -50,7 +50,7 @@ const emotes = {
 	'Kashima Foxes': 'KAS',
 	'Indianapolis Apex': 'IND',
 	'Brew City Bears': 'BCB',
-	'Louisville Lemurs': 'LVL'
+	'Louisville Lemurs': 'LOU'
 
 };
 
