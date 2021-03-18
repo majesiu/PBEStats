@@ -24,7 +24,9 @@
         "new orleans rougarous": "0x671567",
         "detroit demons" : "0xbd5b02",
         "indianapolis apex": "0x91080C",
-        "kashima foxes": "0x045C5C"
+        "kashima foxes": "0x045C5C",
+        "brew city bears": "0xeee1c6",
+        "lousiville lemurs": "0xffb314"
     },
     "idsToTeamNames" : {
         "1": "new york voyagers",
@@ -48,8 +50,9 @@
         "32": "new orleans rougarous",
         "33": "detroit demons",
         "36": "indianapolis apex",
-        "37": "kashima foxes"
-
+        "37": "kashima foxes",
+        "38": "brew city bears",
+        "39": "lousiville lemurs"
     },
     "teamIds" : {
         "new york voyagers": 1,
@@ -73,7 +76,9 @@
         "new orleans rougarous": 32,
         "detroit demons" : 33,
         "indianapolis apex" : 36,
-        "kashima foxes" : 37
+        "kashima foxes" : 37,
+        "brew city bears": 38,
+        "lousiville lemurs": 39
     },
     "teamAliases" : {
         "nyv" :"new york voyagers",
@@ -97,6 +102,8 @@
         "kas": "kashima foxes",
         "ind": "indianapolis apex",
         "sar": "sarasota supernovas",
+        "bcb":  "brew city bears",
+        "lvl": "lousiville lemurs",
         "new york" :"new york voyagers",
         "florida" :"sarasota supernovas",
         "outer banks" :"outer banks aviators",
@@ -146,6 +153,11 @@
         "kashima": "kashima foxes",
         "foxes": "kashima foxes",
         "sarasota": "sarasota supernovas",
-        "supernovas": "sarasota supernovas"
+        "supernovas": "sarasota supernovas",
+        "brew": "brew city bears",
+        "bears": "brew city bears",
+        "brew city": "brew city bears",
+        "louisville": "lousiville lemurs",
+        "lemurs": "lousiville lemurs"
     }
 }
