@@ -48,7 +48,10 @@ const emotes = {
 	'New Orleans Rougarous': 'NO',
 	'Detroit Demons': 'DET',
 	'Kashima Foxes': 'KAS',
-	'Indianapolis Apex': 'IND'
+	'Indianapolis Apex': 'IND',
+	'Brew City Bears': 'BCB',
+	'Louisville Lemurs': 'LVL'
+
 };
 
 
