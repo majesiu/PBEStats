@@ -25,8 +25,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 
 const { token } = require('./config.json');
-const { prefix } = require('./environment.json');
-const standings = require('./modules/standingsUtil.js');
+const { prefix } = require('./environment.json'); 
 const scrapPlayers = require('./modules/scrapPlayers.js');
 const playerPersistence = require('./modules/playerPersistence');
 const CronJob = require('cron').CronJob;
@@ -47,8 +46,6 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
-	standings.initializeStandings();
-	console.log('Initialized Standings');
 	scrapPlayers.initializePlayersList();
 	console.log('Initialized Player List');
 	playerPersistence.userPlayers.sync();
@@ -61,9 +58,7 @@ client.on('ready', () => {
 
 function initCrons() {
 	console.log('Before job instantiation');
-	const job = new CronJob('00 00 02 * * *', function() {
-		standings.initializeStandings();
-		console.log('Cron Synchronized Standings');
+	const job = new CronJob('00 00 02 * * *', function() { 
 		scrapPlayers.initializePlayersList();
 		console.log('Cron Players Lists');
 	});
