@@ -47,11 +47,13 @@ const emotes = {
 	'San Bernardino 66ers':'SB',
 	'New Orleans Rougarous': 'NO',
 	'Detroit Demons': 'DET',
-	'Kashima Foxes': 'KAS',
+	'Maui Makos': 'MAU',
 	'Indianapolis Apex': 'IND',
 	'Brew City Bears': 'BCB',
-	'Louisville Lemurs': 'LOU'
-
+	'Louisville Lemurs': 'LOU',
+	"Buffalo Surge": "BUF", 
+	"seattle sea serpents": "SEA",
+	"california firehawks": "CAL"
 };
 
 
@@ -68,9 +70,7 @@ const config = {
 	},
 };
 
-// TODO: transform/add this into cron-job
-// TODO: Colorize tables using discord https://www.reddit.com/r/discordapp/comments/8lev3t/discord_colored_text_with_code_markup_guide/
-function initializeStandings() {
+async function initializeStandings() {
 	tabletojson.convertUrl(
 		`${domainUrl}/leagues/league_100_standings.html`,
 		function(tablesAsJson) {
