@@ -158,7 +158,7 @@ function parseAdvancedBattingStats(data) {
 
 function parseFieldingStats(data) {
 	let fieldingInfo = '\n**Fielding**';
-	const seasonYear = 2051;
+	const seasonYear = 2052;
 	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB)`, data).parent().parent();
 	const setMinors = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- R)`, data).parent().parent();
 	for (let i = 0; i < set.length; i++) {
