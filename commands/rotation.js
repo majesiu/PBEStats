@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const { domainUrl, teamColors, teamAliases, teamIds } = require('../environment.json');
 const playerPersistence = require('../modules/playerPersistence');
 
@@ -59,6 +59,7 @@ module.exports = {
 
 				// handle team data
 				resp.on('end', () => {
+					const $ = cheerio.load(data);
 					const title = $('.reptitle ', data).text();
 
 					return message.channel.send({ embed: {
@@ -113,6 +114,7 @@ module.exports = {
 
 // TODO: make it work with table module
 function pitchingData(data) {
+	const $ = cheerio.load(data);
 	let row = '\n';
 	let output = '';
 	$('td:contains(PITCHING STAFF)', data).last().children().children().children().children().each(function(index, element) {
