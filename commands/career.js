@@ -23,7 +23,7 @@
 */
 const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const { domainUrl, teamColors, idsToTeamNames } = require('../environment.json');
@@ -69,6 +69,7 @@ module.exports = {
 				// handle player data
 				resp.on('end', () => {
 					// create title
+					const $ = cheerio.load(data);
 					let title = $('.reptitle ', data).text();
 					title += seasonYear ? ` in ${seasonYear} (${season.toUpperCase()})` : ' Career Totals';
 					title += minorsMode ? ' MiLPBE' : ' PBE';
@@ -150,6 +151,7 @@ module.exports = {
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
+	const $ = cheerio.load(data);
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	if (seasonYear) {
 		if (postseasonMode) {
@@ -200,6 +202,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 	let basicInfo = '';
+	const $ = cheerio.load(data);
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
 	if (seasonYear) {
 		if (postseasonMode) {
@@ -247,6 +250,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 
 function parseFieldingCareer(data, seasonYear, minorsMode) {
 	let basicInfo = '';
+	const $ = cheerio.load(data);
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $(`a[href*="team_year"]:contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent();
 	if (set.length === 0) {
 		return `Player haven't played any games in the field ${seasonYear ? 'that season' : `in his ${minorsMode ? 'MiLPBE' : 'PBE'} career`}`;

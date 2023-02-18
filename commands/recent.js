@@ -23,7 +23,7 @@
 */
 const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const { table, getBorderCharacters } = require('table');
@@ -58,6 +58,7 @@ module.exports = {
 
 				// handle player data
 				resp.on('end', () => {
+					const $ = cheerio.load(data);
 					const title = $('.reptitle ', data).text();
 
 					return message.channel.send({ embed: {
@@ -125,6 +126,7 @@ const config = {
 
 // parse scraped data
 function last10(data) {
+	const $ = cheerio.load(data);
 	const set = $('a[href*="box_scores"]', data).parent().parent().parent().children();
 	const tableData = [];
 	for (let i = 0; i < set.length; i++) {

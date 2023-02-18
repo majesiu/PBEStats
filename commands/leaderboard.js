@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const { table, getBorderCharacters } = require('table');
 const { domainUrl } = require('../environment.json');
 
@@ -92,6 +92,7 @@ const config = {
 function getStatsInfo(data, stat, pitchersMode) {
 	const resultTable = [];
 	let skipCount = 0;
+	const $ = cheerio.load(data);
 	const set = $(`th:icontains(${stat})`, data).parent().parent().children();
 	if (set.length >= 6) {
 		if (set.length >= 12 && pitchersMode) skipCount = 6;

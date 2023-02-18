@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const { domainUrl } = require('../environment.json');
 
 function nextChar(c) {
@@ -86,6 +86,7 @@ function initializePlayersList() {
 			});
 
 			resp.on('end', () => {
+				const $ = cheerio.load(data);
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					let key = $(element).text().toLowerCase().trim().split(' ').filter(function(el) {
 						return el.length > 0;
@@ -110,6 +111,7 @@ function initializePlayersList() {
 			});
 
 			resp.on('end', () => {
+				const $ = cheerio.load(data);
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					let key = $(element).text().toLowerCase().trim().split(' ').filter(function(el) {
 						return el.length > 0;
@@ -134,6 +136,7 @@ function initializePlayersList() {
 			});
 
 			resp.on('end', () => {
+				const $ = cheerio.load(data);
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					let key = $(element).text().toLowerCase().trim().split(', ').filter(function(el) {
 						return el.length > 0;
@@ -158,6 +161,7 @@ function initializePlayersList() {
 			});
 
 			resp.on('end', () => {
+				const $ = cheerio.load(data);
 				$('td .dl > a[href*="player"]', data).each(function(index, element) {
 					let key = $(element).text().toLowerCase().trim().split(', ').filter(function(el) {
 						return el.length > 0;

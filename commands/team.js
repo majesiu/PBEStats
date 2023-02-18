@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const { domainUrl, teamColors, teamAliases, teamIds } = require('../environment.json');
 
@@ -59,6 +59,7 @@ module.exports = {
 
 				// handle team data
 				resp.on('end', () => {
+					const $ = cheerio.load(data);
 					const title = $('.reptitle ', data).text();
 
 					return message.channel.send({ embed: {
@@ -106,6 +107,7 @@ module.exports = {
 
 // parse basic stats from page
 function basicStats(data) {
+	const $ = cheerio.load(data);
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(5) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
@@ -117,6 +119,7 @@ function basicStats(data) {
 
 // parse batting stats from page
 function battingStats(data) {
+	const $ = cheerio.load(data);
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(6) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
@@ -128,6 +131,7 @@ function battingStats(data) {
 
 // parse pitching stats from page
 function pitchingStats(data) {
+	const $ = cheerio.load(data);
 	let output = '';
 	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(7) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {

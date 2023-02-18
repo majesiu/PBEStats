@@ -22,7 +22,7 @@
 * SOFTWARE.
 */
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const { table, getBorderCharacters } = require('table');
 const { domainUrl, teamColors, teamAliases, teamIds } = require('../environment.json');
 const playerPersistence = require('../modules/playerPersistence');
@@ -61,6 +61,7 @@ module.exports = {
 
 				// handle team data
 				resp.on('end', () => {
+					const $ = cheerio.load(data);
 					const title = $('.reptitle ', data).text();
 
 					return message.channel.send({ embed: {
@@ -121,6 +122,7 @@ const tableLineupConfig = {
 function battingLineup(data, versus) {
 	let row = '';
 	const dataTable = [];
+	const $ = cheerio.load(data);
 	$(`td:contains(LINEUP VS ${versus}+DH)`, data).last().children().children().children().children().each(function(index, element) {
 		if (index != 0) {
 			row += $(element).text();

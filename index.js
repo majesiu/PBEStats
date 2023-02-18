@@ -30,8 +30,8 @@ const scrapPlayers = require('./modules/scrapPlayers.js');
 const playerPersistence = require('./modules/playerPersistence');
 const CronJob = require('cron').CronJob;
 
-
 const client = new Discord.Client();
+
 
 client.commands = new Discord.Collection();
 

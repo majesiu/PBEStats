@@ -23,7 +23,7 @@
 */
 const scrapPlayers = require('../modules/scrapPlayers.js');
 const http = require('http');
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const playerPersistence = require('../modules/playerPersistence');
 const FuzzySearch = require('fuzzy-search');
 const career = require('./career');
@@ -70,6 +70,7 @@ module.exports = {
 
 				// handle player data
 				resp.on('end', () => {
+					const $ = cheerio.load(data);
 					const title = $('.reptitle ', data).text();
 					return message.channel.send({ embed: {
 						color: parseInt(teamColors[$('a[href*="team"]', data).eq(0).text().toLowerCase().trim()]),
@@ -129,6 +130,7 @@ module.exports = {
 
 function parseBatterPage(data) {
 	let basicInfo = '';
+	const $ = cheerio.load(data);
 	basicInfo += '\nGames: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text();
 	basicInfo += '\nAt-bats: ' + $('table .data > tbody > tr > td:nth-child(2)', data).eq(0).text();
 	basicInfo += '\nHits: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
@@ -147,6 +149,7 @@ function parseBatterPage(data) {
 }
 function parseAdvancedBattingStats(data) {
 	let advancedInfo = '';
+	const $ = cheerio.load(data);
 	advancedInfo += '\nwOBA: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text();
 	advancedInfo += '\nISO: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(17)', data).text();
 	advancedInfo += '\nwRC+: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(18)', data).text();
@@ -157,6 +160,7 @@ function parseAdvancedBattingStats(data) {
 }
 
 function parseFieldingStats(data) {
+	const $ = cheerio.load(data);
 	let fieldingInfo = '\n**Fielding**';
 	const seasonYear = 2053;
 	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB)`, data).parent().parent();
@@ -191,6 +195,7 @@ function parseFieldingStats(data) {
 	return fieldingInfo;
 }
 function parsePitcherPage(data) {
+	const $ = cheerio.load(data);
 	let basicInfo = '';
 	basicInfo += '\nGames/Started: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text() + '/' + $('table .data > tbody > tr > td:nth-child(2)', data).eq(0).text();
 	basicInfo += '\nWins-Losses: ' + $('table .data > tbody > tr > td:nth-child(3)', data).eq(0).text();
@@ -206,6 +211,7 @@ function parsePitcherPage(data) {
 	return basicInfo;
 }
 function parseAdvancedPitcherStats(data) {
+	const $ = cheerio.load(data);
 	let advancedInfo = '';
 	advancedInfo += '\nFIP: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(11)', data).text();
 	advancedInfo += '\nFIP-: ' + $('table:nth-child(1) > tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(13)', data).text();
