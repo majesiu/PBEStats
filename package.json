@@ -13,7 +13,7 @@
     "cron": "^1.7.1",
     "discord.js": "^12.5.3",
     "fuzzy-search": "^3.0.1",
-    "sequelize": "^5.16.0",
+    "sequelize": "^6.28.2",
     "sqlite3": "^5.0.0",
     "table": "^5.4.6",
     "tabletojson": "^1.0.4"
