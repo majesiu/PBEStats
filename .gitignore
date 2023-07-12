@@ -5,3 +5,4 @@ sqlite3_analyzer.exe
 sqlite3.exe
 test.js
 database.sqlite
+.vscode/
