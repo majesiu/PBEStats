@@ -120,6 +120,7 @@ const tableLineupConfig = {
 
 // parse site data to get lineup
 function battingLineup(data, versus) {
+	const $ = cheerio.load(data);
 	let row = '';
 	const dataTable = [];
 	const $ = cheerio.load(data);
