@@ -162,7 +162,8 @@ function parseAdvancedBattingStats(data) {
 function parseFieldingStats(data) {
 	const $ = cheerio.load(data);
 	let fieldingInfo = '\n**Fielding**';
-	const seasonYear = 2064;
+	const seasonDate = $('tbody > tr:nth-child(1) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(1) > td:nth-child(1) > div:nth-child(4)', data).text();
+	const seasonYear = seasonDate.substring(6);
 	const set = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- MLB)`, data).parent().parent();
 	const setMinors = $(`a[href*="team_year"]:contains(${seasonYear}):contains(- R)`, data).parent().parent();
 	for (let i = 0; i < set.length; i++) {
