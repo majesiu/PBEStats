@@ -129,6 +129,7 @@ module.exports = {
 };
 
 function parseBatterPage(data) {
+	const $ = cheerio.load(data);
 	let basicInfo = '';
 	const $ = cheerio.load(data);
 	basicInfo += '\nGames: ' + $('table .data > tbody > tr > td:nth-child(1)', data).eq(0).text();
@@ -148,6 +149,7 @@ function parseBatterPage(data) {
 	return basicInfo;
 }
 function parseAdvancedBattingStats(data) {
+	const $ = cheerio.load(data);
 	let advancedInfo = '';
 	const $ = cheerio.load(data);
 	advancedInfo += '\nwOBA: ' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text();
