@@ -29,6 +29,6 @@ module.exports = {
 	description: 'Returns link to the rookie discord',
 	cooldown: 5,
 	execute(message) {
-		message.channel.send('Join our rookie discord and find out everything you need to know about creating your future HOFer today! https://discord.gg/hBsUDUEdJV');
+		message.channel.send('Join our rookie discord and find out everything you need to know about creating your future HOFer today! https://discord.gg/WnD6SnbSSN');
 	},
 };
