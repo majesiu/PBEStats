@@ -150,6 +150,7 @@ module.exports = {
 /* Functions to gather data from site */
 
 function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
+	const $ = cheerio.load(data);
 	let basicInfo = '';
 	const $ = cheerio.load(data);
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
@@ -201,6 +202,7 @@ function parseBaseHittingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
+	const $ = cheerio.load(data);
 	let basicInfo = '';
 	const $ = cheerio.load(data);
 	let set = seasonYear ? $(`td:contains(${seasonYear}):contains(- ${minorsMode ? (postseasonMode ? 'MiLPBE' : 'R') : 'PBE'})  + td.dr`, data).parent() : $(`th:contains(Total ${minorsMode ? 'MiLPBE' : 'PBE'})`, data).parent().eq(postseasonMode ? 1 : 0);
@@ -249,6 +251,7 @@ function parseBasePitchingCareer(data, seasonYear, minorsMode, postseasonMode) {
 }
 
 function parseFieldingCareer(data, seasonYear, minorsMode) {
+	const $ = cheerio.load(data);
 	let basicInfo = '';
 	const $ = cheerio.load(data);
 	const set = seasonYear ? $(`a[href*="team_year"]:contains(${seasonYear}):contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent() : $(`a[href*="team_year"]:contains(- ${minorsMode ? 'R' : 'MLB'})`, data).parent().parent();
