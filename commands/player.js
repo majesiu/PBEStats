@@ -224,5 +224,6 @@ function parseAdvancedPitcherStats(data) {
 	advancedInfo += '\nCG/CG%: ' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(15)', data).text() + '/' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(16)', data).text() + '%';
 	advancedInfo += '\nShutouts: ' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(17)', data).text();
 	advancedInfo += '\nQS/QS%: ' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(18)', data).text() + '/' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(2) > td:nth-child(19)', data).text() + '%';
+	advancedInfo += '\nSVO/SV%: ' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(2)', data).text() + '/' + $('tbody > tr:nth-child(3) > td > table:nth-child(2) > tbody > tr:nth-child(4) > td:nth-child(4)', data).text() + '%';
 	return advancedInfo;
 }
