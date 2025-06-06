@@ -28,7 +28,7 @@ const { domainUrl } = require('../environment.json');
 
 const emotes = {
 	'New York Voyagers':'NYV',
-	'Sarasota Supernovas':'SAR',
+	'Lunar Base Space Rangers':'LBSR',
 	'Outer Banks Aviators':'OBX',
 	'Cancun Toros':'CAN',
 	'Providence Crabs':'PRO',
@@ -47,13 +47,15 @@ const emotes = {
 	'San Bernardino 66ers':'SB',
 	'New Orleans Rougarous': 'NO',
 	'Detroit Demons': 'DET',
-	'Maui Makos': 'MAU',
+	'Toronto Pathfinders': 'TOR',
 	'Indianapolis Apex': 'IND',
 	'Brew City Bears': 'BCB',
 	'Louisville Lemurs': 'LOU',
 	"Buffalo Surge": "BUF", 
 	"Seattle Sea Serpents": "SEA",
-	"California Firehawks": "CAL"
+	"California Firehawks": "CAL",
+	"Florida Flamingos": "FLA",
+	"Puerto Rico Ranas": "RAN"
 };
 
 
