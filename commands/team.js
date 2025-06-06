@@ -109,7 +109,7 @@ module.exports = {
 function basicStats(data) {
 	const $ = cheerio.load(data);
 	let output = '';
-	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(5) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
+	$('tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(5) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
 			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
@@ -121,7 +121,7 @@ function basicStats(data) {
 function battingStats(data) {
 	const $ = cheerio.load(data);
 	let output = '';
-	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(6) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
+	$('tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(6) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
 			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
@@ -133,7 +133,7 @@ function battingStats(data) {
 function pitchingStats(data) {
 	const $ = cheerio.load(data);
 	let output = '';
-	$('table:nth-child(1) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(7) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
+	$('tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table:nth-child(7) > tbody > tr:nth-child(1) > td', data).parent().parent().children().children('td').each(function(index, element) {
 		if (index != 0) {
 			output += $(element).text().concat(index % 2 !== 0 ? ': ' : '\n');
 		}
