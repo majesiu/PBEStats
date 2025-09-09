@@ -50,7 +50,7 @@ function getRandomInt(min, max) {
 module.exports = {
 	name: 'south',
 	aliases: ['crab', 'crabs', 'southworth'],
-	description: 'Returns random complement commerating S25 Charity Event when Poe had to compliment Simo twice a day after he was pinged.',
+	description: 'Returns random Crab Pun commerating S56 Charity Event',
 	cooldown: 5,
 	execute(message) {
 		const messageNumber = getRandomInt(0, crabLines.length - 1);
